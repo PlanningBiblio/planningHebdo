@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 25 juillet 2013
+Dernière modification : 26 août 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -91,7 +91,7 @@ for($j=0;$j<$config['nb_semaine'];$j++){
 	</select>
 EOD;
 
-    echo "<br/><br/>Horaires normaux<br/>";
+    echo "<br/><br/>Horaires normaux <font id='heures' style='font-weight:bold;position:absolute;left:300px;'>&nbsp;</font><br/>";
   }
   echo "<table border='1' cellspacing='0'>\n";
   echo "<tr style='text-align:center;'><td style='width:150px;'>{$cellule[$j]}</td><td style='width:150px;'>Heure d'arrivée</td>";
@@ -103,10 +103,11 @@ EOD;
   echo "</tr>\n";
   for($i=$debut[$j];$i<$fin[$j];$i++){
     $k=$i-($j*7)-1;
-    echo "<tr><td>{$jours[$k]}</td><td>".selectTemps($i-1,0)."</td><td>".selectTemps($i-1,1)."</td>";
-    echo "<td>".selectTemps($i-1,2)."</td><td>".selectTemps($i-1,3)."</td>";
+    echo "<tr><td>{$jours[$k]}</td><td>".selectTemps($i-1,0,null,"select")."</td><td>".selectTemps($i-1,1,null,"select")."</td>";
+    echo "<td>".selectTemps($i-1,2,null,"select")."</td><td>".selectTemps($i-1,3,null,"select")."</td>";
     if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
-      echo "<td><select name='temps[".($i-1)."][4]'><option value=''>&nbsp;</option>\n";
+      echo "<td><select name='temps[".($i-1)."][4]'>\n";
+      echo "<option value=''>&nbsp;</option>\n";
       echo "<option value='1' >{$config['Multisites-site1']}</option>\n";
       echo "<option value='2' >{$config['Multisites-site2']}</option>\n";
       echo "</select></td>";
@@ -114,10 +115,16 @@ EOD;
     echo "</tr>\n";
   }
   echo "</table>\n";
+
+  // Affichage du nombre d'heures si les periodes ne sont pas définies
+  if(!$configHebdo['periodesDefinies']){
+    echo "Nombre d'heures : <font id='heures' style='font-weight:bold;'>&nbsp;</font><br/>\n";
+  }
+
   // Si périodes définies : formulaires pour la périodes horaires réduits
   if($configHebdo['periodesDefinies']){
     echo "<br/>\n";
-    echo "Horaires réduits<br/>";
+    echo "Horaires réduits <font id='heures2' style='font-weight:bold;;position:absolute;left:300px;'>&nbsp;</font><br/>";
     echo "<table border='1' cellspacing='0'>\n";
     echo "<tr style='text-align:center;'><td style='width:150px;'>{$cellule[$j]}</td><td style='width:150px;'>Heure d'arrivée</td>";
     echo "<td style='width:150px;'>Début de pause</td><td style='width:150px;'>Fin de pause</td>";
@@ -128,10 +135,11 @@ EOD;
     echo "</tr>\n";
     for($i=$debut[$j];$i<$fin[$j];$i++){
       $k=$i-($j*7)-1;
-      echo "<tr><td>{$jours[$k]}</td><td>".selectTemps($i-1,0,2)."</td><td>".selectTemps($i-1,1,2)."</td>";
-      echo "<td>".selectTemps($i-1,2,2)."</td><td>".selectTemps($i-1,3,2)."</td>";
+      echo "<tr><td>{$jours[$k]}</td><td>".selectTemps($i-1,0,2,"select2")."</td><td>".selectTemps($i-1,1,2,"select2")."</td>";
+      echo "<td>".selectTemps($i-1,2,2,"select2")."</td><td>".selectTemps($i-1,3,2,"select2")."</td>";
       if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
-	echo "<td><select name='temps[".($i-1)."][4]'><option value=''>&nbsp;</option>\n";
+	echo "<td><select name='temps2[".($i-1)."][4]'>\n";
+	echo "<option value=''>&nbsp;</option>\n";
 	echo "<option value='1' >{$config['Multisites-site1']}</option>\n";
 	echo "<option value='2' >{$config['Multisites-site2']}</option>\n";
 	echo "</select></td>";
@@ -167,6 +175,10 @@ else{
 
 ?>
 </form>
+<script type='text/JavaScript'>
+$(".select").change(function(){plHebdoCalculHeures("");});
+$(".select2").change(function(){plHebdoCalculHeures(2);});
+</script>
 </div> <!-- nouveauPlanning -->
 
 

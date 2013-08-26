@@ -1,0 +1,5 @@
+***	Version 1.2.2	(Jérôme Combes, Août 2013)		***
+- Infos
+Nécessite la version 1.5.2 de planningBiblio
+- Améliorations :
+Affichage du nombres d'heures lors de la saisie du planning de présence.
