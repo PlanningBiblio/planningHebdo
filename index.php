@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 24 juillet 2013
+Dernière modification : 30 août 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -38,8 +38,10 @@ if(isset($_GET['message'])){
     case "Modif-OK" : $message="Le planning a été modifié avec succés."; $class="MessageOK";	break;
     case "Modif-erreur" : $message="Une erreur est survenue lors de la modification du planning."; $class="MessageErreur"; break;
   }
-  echo "<div class='$class' id='information'>$message</div>\n";
-  echo "<script type='text/JavaScript'>setTimeout(\"document.getElementById('information').style.display='none'\",3000);</script>\n";
+  if($message){
+    echo "<div class='$class' id='information'>$message</div>\n";
+    echo "<script type='text/JavaScript'>setTimeout(\"document.getElementById('information').style.display='none'\",3000);</script>\n";
+  }
 }
 
 
