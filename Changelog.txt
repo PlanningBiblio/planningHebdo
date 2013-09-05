@@ -1,5 +1,9 @@
+***	Version 1.2.2	(Jérôme Combes, 5 Septembre 2013)		***
+- Améliorations :
+Affichage des crédits de congés et récupérations dans le menun (si le plugin congés est installé)
+
 ***	Version 1.2.2	(Jérôme Combes, Août 2013)		***
 - Infos
-Nécessite la version 1.5.2 de planningBiblio
+Nécessite la version 1.5.2 (ou plus) de planningBiblio
 - Améliorations :
 Affichage du nombres d'heures lors de la saisie du planning de présence.
