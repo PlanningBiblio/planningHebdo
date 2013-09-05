@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 26 août 2013
+Dernière modification : 5 septembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -22,9 +22,20 @@ $p->getConfig();
 $configHebdo=$p->config;
 
 // Initialisation des variables
+// Plannings de présence
 $annee_courante=date("n")<9?(date("Y")-1)."-".(date("Y")):(date("Y"))."-".(date("Y")+1);
 $annee_suivante=date("n")<9?(date("Y"))."-".(date("Y")+1):(date("Y")+1)."-".(date("Y")+2);
 
+// Crédits (congés, récupérations)
+if(in_array("conges",$plugins)){
+  $p=new personnel();
+  $p->fetchById($_SESSION['login_id']);
+  $credits['annuel']=$p->elements[0]['congesAnnuel'];
+  $credits['conges']=$p->elements[0]['congesCredit'];
+  $credits['reliquat']=$p->elements[0]['congesReliquat'];
+  $credits['anticipation']=$p->elements[0]['congesAnticipation'];
+  $credits['recuperation']=$p->elements[0]['recupSamedi'];
+}
 
 // Notifications
 if(isset($_GET['message'])){
@@ -42,9 +53,22 @@ if(isset($_GET['message'])){
 <!--	Menu	-->
 <div id='onglets'>
 <font id='titre'>Mon Compte</font>
-<ul>		
-<li id='current'><a href='javascript:show("planningPresence","motDePasse","li1");'>Mon planning de présence</a></li>
-<li id='li2'><a href='javascript:show("motDePasse","planningPresence","li2");'>Mon mot de passe</a></li>
+<ul>
+<?php
+if(in_array("conges",$plugins)){
+  echo <<<EOD
+    <li id='current'><a href='javascript:show("planningPresence","credits,motDePasse","li1");'>Mes plannings de présence</a></li>
+    <li id='li2'><a href='javascript:show("credits","planningPresence,motDePasse","li2");'>Mes crédits</a></li>
+    <li id='li3'><a href='javascript:show("motDePasse","planningPresence,credits","li3");'>Mon mot de passe</a></li>
+EOD;
+}
+else{
+  echo <<<EOD
+    <li id='current'><a href='javascript:show("planningPresence","motDePasse","li1");'>Mes plannings de présence</a></li>
+    <li id='li2'><a href='javascript:show("motDePasse","planningPresence","li2");'>Mon mot de passe</a></li>
+EOD;
+}
+?>
 </ul>
 </div>
 <br/><br/><br/><br/>
@@ -216,6 +240,26 @@ foreach($p->elements as $elem){
 
 </div> <!-- PlanningPresence -->
 
+<!-- Crédits -->
+<?php
+if(in_array("conges",$plugins)){
+  echo <<<EOD
+  <div id='credits' style='margin-left:80px;display:none;'>
+  <h3>Crédits</h3>
+  <table class='tableauFiches'>
+  <tr><td style='font-weight:bold;' colspan='2'>Congés</td></tr>
+EOD;
+  echo "<tr><td>Crédit annuel</td><td style='text-align:right;'>".heure4($credits['annuel'])."</td></tr>\n";
+  echo "<tr><td>Crédit restant</td><td style='text-align:right;'>".heure4($credits['conges'])."</td></tr>\n";
+  echo "<tr><td>Reliquat</td><td style='text-align:right;'>".heure4($credits['reliquat'])."</td></tr>\n";
+//   echo "<tr><td>Pris par anticipation</td><td style='text-align:right;'>".heure4($credits['anticipation'])."</td></tr>\n";
+  echo "<tr><td style='font-weight:bold;padding-top:20px;' colspan='2'>Récupérations du samedi</td></tr>\n";
+  echo "<tr><td>Crédit</td><td style='text-align:right;'>".heure4($credits['recuperation'])."</td></tr>\n";
+  echo "</table>\n";
+  echo "</div>\n";
+}
+?>
+<!-- Crédits-->
 
 <!-- Mot de Passe -->
 <div id='motDePasse' style='margin-left:80px;display:none;'>
