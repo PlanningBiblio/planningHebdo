@@ -45,7 +45,7 @@ class planningHebdo{
   public function add($data){
     // Si $data['annee'] : il y a 2 périodes distinctes avec des horaires définis 
     // (horaires normaux et horaires réduits) soit 2 tableaux à insérer
-    if($data['annee']){
+    if(array_key_exists("annee",$data)){
       // Récupération des horaires
       $this->dates=array($data['annee']);
       $this->getPeriodes();

@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 26 août 2013
+Dernière modification : 5 septembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -74,7 +74,7 @@ $jours=Array("Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche");
 <?php
 for($j=0;$j<$config['nb_semaine'];$j++){
   echo "<br/>\n";
-  echo "<table border='1' cellspacing='0'>\n";
+  echo "<table border='1' cellspacing='0' id='tableau{$j}' >\n";
   echo "<tr style='text-align:center;'><td style='width:150px;'>{$cellule[$j]}</td><td style='width:150px;'>Heure d'arrivée</td>";
   echo "<td style='width:150px;'>Début de pause</td><td style='width:150px;'>Fin de pause</td>";
   echo "<td style='width:150px;'>Heure de départ</td>";
@@ -102,7 +102,7 @@ for($j=0;$j<$config['nb_semaine'];$j++){
     echo "</tr>\n";
   }
   echo "</table>\n";
-  echo "Nombre d'heures : <font id='heures' style='font-weight:bold;'>&nbsp;</font><br/>\n";
+  echo "Nombre d'heures : <font id='heures_{$j}' style='font-weight:bold;'>&nbsp;</font><br/>\n";
 }
 
 if(!$modifAutorisee){
@@ -153,8 +153,8 @@ elseif($modifAutorisee){
 
 </form>
 <script type='text/JavaScript'>
-$("document").ready(function(){plHebdoCalculHeures("");});
-$(".select").change(function(){plHebdoCalculHeures("");});
+$("document").ready(function(){plHebdoCalculHeures2();});
+$(".select").change(function(){plHebdoCalculHeures($(this),"");});
 </script>
 
 </div> <!-- Planning -->

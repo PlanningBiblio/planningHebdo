@@ -115,9 +115,9 @@ for($j=0;$j<$config['nb_semaine'];$j++){
 	</select>
 EOD;
 
-    echo "<br/><br/>Horaires normaux <font id='heures' style='font-weight:bold;position:absolute;left:300px;'>&nbsp;</font><br/>";
+    echo "<br/><br/>Horaires normaux <font id='heures_{$j}' style='font-weight:bold;position:absolute;left:300px;'>&nbsp;</font><br/>";
   }
-  echo "<table border='1' cellspacing='0'>\n";
+  echo "<table border='1' cellspacing='0' id='tableau{$j}'>\n";
   echo "<tr style='text-align:center;'><td style='width:150px;'>{$cellule[$j]}</td><td style='width:150px;'>Heure d'arrivée</td>";
   echo "<td style='width:150px;'>Début de pause</td><td style='width:150px;'>Fin de pause</td>";
   echo "<td style='width:150px;'>Heure de départ</td>";
@@ -142,14 +142,14 @@ EOD;
 
   // Affichage du nombre d'heures si les periodes ne sont pas définies
   if(!$configHebdo['periodesDefinies']){
-    echo "Nombre d'heures : <font id='heures' style='font-weight:bold;'>&nbsp;</font><br/>\n";
+    echo "Nombre d'heures : <font id='heures_{$j}' style='font-weight:bold;'>&nbsp;</font><br/>\n";
   }
 
   // Si périodes définies : formulaires pour la périodes horaires réduits
   if($configHebdo['periodesDefinies']){
     echo "<br/>\n";
-    echo "Horaires réduits <font id='heures2' style='font-weight:bold;;position:absolute;left:300px;'>&nbsp;</font><br/>";
-    echo "<table border='1' cellspacing='0'>\n";
+    echo "Horaires réduits <font id='heures2_{$j}' style='font-weight:bold;;position:absolute;left:300px;'>&nbsp;</font><br/>";
+    echo "<table border='1' cellspacing='0' id='tableau{$j}'>\n";
     echo "<tr style='text-align:center;'><td style='width:150px;'>{$cellule[$j]}</td><td style='width:150px;'>Heure d'arrivée</td>";
     echo "<td style='width:150px;'>Début de pause</td><td style='width:150px;'>Fin de pause</td>";
     echo "<td style='width:150px;'>Heure de départ</td>";
@@ -200,8 +200,8 @@ else{
 ?>
 </form>
 <script type='text/JavaScript'>
-$(".select").change(function(){plHebdoCalculHeures("");});
-$(".select2").change(function(){plHebdoCalculHeures(2);});
+$(".select").change(function(){plHebdoCalculHeures($(this),"");});
+$(".select2").change(function(){plHebdoCalculHeures($(this),2);});
 </script>
 </div> <!-- nouveauPlanning -->
 
