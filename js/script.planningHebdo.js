@@ -1,12 +1,12 @@
 /*
-Planning Biblio, Plugin planningHebdo Version 1.2.3
+Planning Biblio, Plugin planningHebdo Version 1.2.4
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.txt et COPYING.txt
 Copyright (C) 2013 - Jérôme Combes
 
-Fichier : plugins/planningHebdo/js/script.planningHebdi.js
+Fichier : plugins/planningHebdo/js/script.planningHebdo.js
 Création : 26 août 2013
-Dernière modification : 5 septembre 2013
+Dernière modification : 17 septembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -75,4 +75,11 @@ function plHebdoCalculHeures2(){
     numero=id.substring(id.length-1,id.length);
     plHebdoCalculHeures(numero,"");
   });
+}
+
+function plHebdoSupprime(id){
+  if(confirm("Etes vous sûr(e) de vouloir supprimer ce planning de présence ?")){
+    f=file("index.php?page=plugins/planningHebdo/supprime.php&id="+id);
+    document.location.reload(false);
+  }
 }
