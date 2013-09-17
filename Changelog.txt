@@ -1,3 +1,12 @@
+***	Version 1.2.6	(Jérôme Combes, 17 Septembre 2013)		***
+- Améliorations :
+Tri des plannings de présence par date de début,fin et nom de l'agent
+
+***	Version 1.2.5	(Jérôme Combes, 17 Septembre 2013)		***
+- Améliorations :
+Envoie des notifications aux administrateur, y compris celui qui apporte les modifications, 
+lors de la modification ou la validation d'un planning de présence
+
 ***	Version 1.2.4	(Jérôme Combes, 17 Septembre 2013)		***
 - Améliorations :
 Ajoute la possibilité de supprimer les plannings de présence

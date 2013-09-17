@@ -1,6 +1,6 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.2.5
+Planning Biblio, Plugin planningHebdo Version 1.2.6
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.txt et COPYING.txt
 Copyright (C) 2013 - Jérôme Combes
@@ -73,7 +73,7 @@ foreach($p->elements as $elem){
     echo "<img src='img/modif.png' alt='Voir' border='0'/></a>";
     echo "<a href='javascript:plHebdoSupprime({$elem['id']});' style='margin-left:6px;'/>";
     echo "<img src='img/suppr.png' alt='Voir' border='0'/></a></td>";
-  echo "<td>".nom($elem['perso_id'])."</td>";
+  echo "<td>{$elem['nom']}</td>";
   echo "<td>".dateFr($elem['debut'])."</td>";
   echo "<td>".dateFr($elem['fin'])."</td>";
   echo "<td>$validation</td>";

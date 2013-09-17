@@ -1,6 +1,6 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.2.5
+Planning Biblio, Plugin planningHebdo Version 1.2.6
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.txt et COPYING.txt
 Copyright (C) 2013 - Jérôme Combes
@@ -155,9 +155,11 @@ class planningHebdo{
     if($db->result){
       foreach($db->result as $elem){
 	$elem['temps']=unserialize($elem['temps']);
+	$elem['nom']=nom($elem['perso_id']);
 	$this->elements[]=$elem;
       }
     }
+  usort($this->elements,"cmp_debut_fin_nom");
   }
 
   public function getConfig(){
