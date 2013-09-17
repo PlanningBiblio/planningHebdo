@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.2.4
+Planning Biblio, Plugin planningHebdo Version 1.2.5
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.txt et COPYING.txt
 Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/class.planningHebdo.php
 Création : 23 juillet 2013
-Dernière modification : 5 septembre 2013
+Dernière modification : 17 septembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -225,7 +225,7 @@ class planningHebdo{
 
     foreach($p->elements as $elem){
       $tmp=unserialize($elem['droits']);
-      if(in_array(24,$tmp) and $elem['id']!=$_SESSION['login_id']){
+      if(in_array(24,$tmp)){
 	$destinataires[]=$elem['mail'];
       }
     }
