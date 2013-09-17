@@ -1,3 +1,7 @@
+***	Version 1.2.4	(Jérôme Combes, 17 Septembre 2013)		***
+- Améliorations :
+Ajoute la possibilité de supprimer les plannings de présence
+
 ***	Version 1.2.2	(Jérôme Combes, 5 Septembre 2013)		***
 - Améliorations :
 Affichage des crédits de congés et récupérations dans le menun (si le plugin congés est installé)
