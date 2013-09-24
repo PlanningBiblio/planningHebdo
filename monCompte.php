@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 5 septembre 2013
+Dernière modification : 23 septembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -253,7 +253,7 @@ EOD;
   echo "<tr><td>Crédit restant</td><td style='text-align:right;'>".heure4($credits['conges'])."</td></tr>\n";
   echo "<tr><td>Reliquat</td><td style='text-align:right;'>".heure4($credits['reliquat'])."</td></tr>\n";
 //   echo "<tr><td>Pris par anticipation</td><td style='text-align:right;'>".heure4($credits['anticipation'])."</td></tr>\n";
-  echo "<tr><td style='font-weight:bold;padding-top:20px;' colspan='2'>Récupérations du samedi</td></tr>\n";
+  echo "<tr><td style='font-weight:bold;padding-top:20px;' colspan='2'>Récupérations</td></tr>\n";
   echo "<tr><td>Crédit</td><td style='text-align:right;'>".heure4($credits['recuperation'])."</td></tr>\n";
   echo "</table>\n";
   echo "</div>\n";
