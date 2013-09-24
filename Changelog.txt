@@ -1,3 +1,7 @@
+***	Version 1.2.7	(Jérôme Combes, 24 Septembre 2013)		***
+- Améliorations :
+Modification du titre "Récupération des samedis" -> "Récupération" dans le menu "Mon compte"
+
 ***	Version 1.2.6	(Jérôme Combes, 17 Septembre 2013)		***
 - Améliorations :
 Tri des plannings de présence par date de début,fin et nom de l'agent
