@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/class.planningHebdo.php
 Création : 23 juillet 2013
-Dernière modification : 17 septembre 2013
+Dernière modification : 26 septembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -192,6 +192,10 @@ class planningHebdo{
   $this->periodes=$dates;
   }
 
+  public function suppression_agents($liste){
+    $db=new db();
+    $db->delete("planningHebdo","perso_id IN ($liste)");
+  }
 
   public function update($data){
     $temps=serialize($data['temps']);
