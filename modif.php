@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 4 octobre 2013
+Dernière modification : 8 octobre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -33,6 +33,7 @@ $fin1=$p->elements[0]['fin'];
 $perso_id=$p->elements[0]['perso_id'];
 $temps=$p->elements[0]['temps'];
 $valide=$p->elements[0]['valide'];
+$remplace=$p->elements[0]['remplace'];
 
 // Sécurité
 $admin=in_array(24,$droits)?true:false;
@@ -73,6 +74,7 @@ if(!$configHebdo['periodesDefinies']){
 <input type='hidden' name='id' value='<?php echo $id; ?>' />
 <input type='hidden' name='perso_id' value='<?php echo $perso_id; ?>' />
 <input type='hidden' name='valide' value='<?php echo $valide; ?>' />
+<input type='hidden' name='remplace' value='<?php echo $remplace; ?>' />
 
 <!-- Affichage des tableaux avec la sélection des horaires -->
 <?php
@@ -121,11 +123,21 @@ for($j=0;$j<$config['nb_semaine'];$j++){
 }
 
 if(!$modifAutorisee){
-  echo "<p>Vos horaires ont été validés. Pour les modifier, contactez votre chef de service.</p>\n";
+  echo "<p><b class='important'>Vos horaires ont été validés.</b><br/>Pour les modifier, contactez votre chef de service.</p>\n";
 }
 elseif($valide and !$admin){
-  echo "<p><b>Vos horaires ont été validés.</b><br/>Si vous souhaitez les changer, modifiez la date de début d'effet.<br/>";
-  echo "Vos nouveaux horaires devront être validés par un administrateur. Ils seront effectifs à partir de la date de début choisie.</p>\n";
+  echo "<p><b class='important'>Vos horaires ont été validés.</b><br/>Si vous souhaitez les changer, modifiez la date de début et/ou de fin d'effet.<br/>";
+  echo "Vos nouveaux horaires seront enregistrés et devront être validés par un administrateur.<br/>";
+  echo "Les anciens horaires seront conservés en attendant la validation des nouveaux.</p>\n";
+}
+elseif($valide and $admin){
+  echo "<p style='width:850px;text-align:justify;'><b class='important'>Vos horaires ont été validés.</b><br/>";
+  echo "En tant qu'administrateur, vous pouvez les modifier et les enregistrer en tant que copie.<br/>";
+  echo "Dans ce cas, modifiez la date de début et/ou de fin d'effet. ";
+  echo "Vos nouveaux horaires seront enregistrés et devront ensuite être validés. ";
+  echo "Les anciens horaires seront conservés en attendant la validation des nouveaux.<br/>";
+  echo "Vous pouvez également les enregistrer directement mais dans ce cas, vous ne conserverez pas les 
+    anciens horaires.</p>\n";
 }
 
     
@@ -137,7 +149,7 @@ if($modifAutorisee){
   echo "<b>Choisissez la période d'utilisation et validez</b> :\n";
 }
 
-echo "<table style='width:750px;'>\n";
+echo "<table style='width:900px;'>\n";
 
 // if($modifAutorisee and !$configHebdo['periodesDefinies']){
 if(!$configHebdo['periodesDefinies']){
@@ -164,14 +176,19 @@ EOD;
 if($admin){
   echo "<input type='submit' value='Enregistrer les modifications SANS valider' style='margin-left:30px;'/>\n";
   if(!$configHebdo['periodesDefinies']){
-    echo "<input type='button' value='Enregistrer et VALIDER'  style='margin-left:30px;' onclick='document.forms[\"form1\"].validation.value=1;if(plHebdoVerifForm()){document.forms[\"form1\"].submit();}'/></td></tr>\n";
+    echo "<input type='button' value='Enregistrer et VALIDER'  style='margin-left:30px;' onclick='document.forms[\"form1\"].validation.value=1;if(plHebdoVerifForm()){document.forms[\"form1\"].submit();}'/>";
   }else{
-    echo "<input type='button' value='Enregistrer et VALIDER'  style='margin-left:30px;' onclick='document.forms[\"form1\"].validation.value=1;document.forms[\"form1\"].submit();'/></td></tr>\n";
+    echo "<input type='button' value='Enregistrer et VALIDER'  style='margin-left:30px;' onclick='document.forms[\"form1\"].validation.value=1;document.forms[\"form1\"].submit();'/>";
   }
+  if($valide){
+    echo "<input type='button' value='Enregistrer une copie' style='margin-left:30px;' onclick='$(\"input[name=action]\").val(\"copie\");$(\"form[name=form1]\").submit();'/>\n";
+  }
+  echo "</td></tr>\n";
 }
 elseif($modifAutorisee){
   echo "<input type='submit' value='Enregistrer les modifications' style='margin-left:30px;'/>\n";
 }
+
 ?>
 </table>
 

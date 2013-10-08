@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 17 septembre 2013
+Dernière modification : 8 ocotbre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -70,10 +70,10 @@ foreach($p->elements as $elem){
   }
   $planningRemplace=$elem['remplace']==0?dateFr($elem['saisie'],true):$planningRemplace;
   $commentaires=$elem['remplace']?"Remplace le planning <br/>du $planningRemplace":null;
-  $arrow=$elem['remplace']?"&rdsh;":null;
+  $arrow=$elem['remplace']?"<font style='font-size:20pt;'>&rdsh;</font>":null;
 
   echo "<tr style='text-align:center;' class='$class'>";
-  echo "<td>$arrow <a href='index.php?page=plugins/planningHebdo/modif.php&amp;id={$elem['id']}&amp;retour=index.php'/>";
+  echo "<td style='white-space:nowrap;'>$arrow <a href='index.php?page=plugins/planningHebdo/modif.php&amp;id={$elem['id']}&amp;retour=index.php'/>";
     echo "<img src='img/modif.png' alt='Voir' border='0'/></a>";
     echo "<a href='javascript:plHebdoSupprime({$elem['id']});' style='margin-left:6px;'/>";
     echo "<img src='img/suppr.png' alt='Voir' border='0'/></a></td>";

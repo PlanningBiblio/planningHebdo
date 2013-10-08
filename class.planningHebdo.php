@@ -293,6 +293,14 @@ class planningHebdo{
       $db->update("planningHebdo","`actuel`='1'","`id`='{$data['id']}'");
     }
 
+    // Si validation d'un planning de remplacement, suppression du planning d'origine
+    if($data['validation'] and $data['remplace']){
+      $db=new db();
+      $db->delete("planningHebdo","id='{$data['remplace']}'");
+      $db=new db();
+      $db->update("planningHebdo","remplace='0'","remplace='{$data['remplace']}'");
+    }
+
     // Envoi d'un mail aux responsables et à l'agent concerné
     // L'agent
     $destinataires=array();
