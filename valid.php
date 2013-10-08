@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/valid.php
 Création : 23 juillet 2013
-Dernière modification : 23 juillet 2013
+Dernière modification : 3 octobre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -26,6 +26,12 @@ switch($_POST['action']){
   case "modif" :
     $p=new planningHebdo();
     $p->update($_POST);
+    $message=$p->error?"Modif-erreur":"Modif-OK";
+    echo "<script type='text/JavaScript'>document.location.href='index.php?page=plugins/planningHebdo/{$_POST['retour']}&message=$message';</script>\n";
+    break;
+  case "copie" :
+    $p=new planningHebdo();
+    $p->copy($_POST);
     $message=$p->error?"Modif-erreur":"Modif-OK";
     echo "<script type='text/JavaScript'>document.location.href='index.php?page=plugins/planningHebdo/{$_POST['retour']}&message=$message';</script>\n";
     break;

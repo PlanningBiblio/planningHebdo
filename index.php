@@ -57,8 +57,8 @@ Début : <input type='text' name='debut' value='$debut' />&nbsp;<img src='img/ca
 <a href='index.php?page=plugins/planningHebdo/configuration.php' style='margin-left:100px;'>Configuration</a>
 </form>
 
-<table border='0' cellspacing='0' style='width:850px;margin-top:20px;'>
-<tr class='th' style='vertical-align:top;text-align:center;'><td>&nbsp;</td><td>Agent</td><td>Début</td><td>Fin</td><td>Validation</td><td>Actuel</td></tr>
+<table class='tableauStandard'>
+<tr class='th' style='vertical-align:top;text-align:center;'><td>&nbsp;</td><td>Agent</td><td>Service</td><td>Début</td><td>Fin</td><td>Saisie</td><td>Validation</td><td>Actuel</td><td>Commentaires</td></tr>
 EOD;
 $class="tr1";
 foreach($p->elements as $elem){
@@ -68,16 +68,23 @@ foreach($p->elements as $elem){
   if($elem['valide']){
     $validation=nom($elem['valide']).", ".dateFr($elem['validation'],true);
   }
+  $planningRemplace=$elem['remplace']==0?dateFr($elem['saisie'],true):$planningRemplace;
+  $commentaires=$elem['remplace']?"Remplace le planning <br/>du $planningRemplace":null;
+  $arrow=$elem['remplace']?"&rdsh;":null;
+
   echo "<tr style='text-align:center;' class='$class'>";
-  echo "<td><a href='index.php?page=plugins/planningHebdo/modif.php&amp;id={$elem['id']}&amp;retour=index.php'/>";
+  echo "<td>$arrow <a href='index.php?page=plugins/planningHebdo/modif.php&amp;id={$elem['id']}&amp;retour=index.php'/>";
     echo "<img src='img/modif.png' alt='Voir' border='0'/></a>";
     echo "<a href='javascript:plHebdoSupprime({$elem['id']});' style='margin-left:6px;'/>";
     echo "<img src='img/suppr.png' alt='Voir' border='0'/></a></td>";
   echo "<td>{$elem['nom']}</td>";
+  echo "<td>{$elem['service']}</td>";
   echo "<td>".dateFr($elem['debut'])."</td>";
   echo "<td>".dateFr($elem['fin'])."</td>";
+  echo "<td>".dateFr($elem['saisie'],true)."</td>";
   echo "<td>$validation</td>";
   echo "<td>$actuel</td>";
+  echo "<td>$commentaires</td>";
   echo "</tr>\n";
 }
 echo "</table>\n";

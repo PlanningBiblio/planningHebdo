@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/class.planningHebdo.php
 Création : 23 juillet 2013
-Dernière modification : 26 septembre 2013
+Dernière modification : 8 octobre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -53,6 +53,7 @@ class planningHebdo{
 
       // 1er tableau
       $insert=array("perso_id"=>$_SESSION['login_id'],"debut"=>$dates[0][0],"fin"=>$dates[0][1],"temps"=>serialize($data['temps']));
+
       $db=new db();
       $db->insert2("planningHebdo",$insert);
       $this->error=$db->error;
@@ -65,6 +66,11 @@ class planningHebdo{
     // Sinon, insertion d'un seul tableau
     else{
       $insert=array("perso_id"=>$_SESSION['login_id'],"debut"=>$data['debut'],"fin"=>$data['fin'],"temps"=>serialize($data['temps']));
+
+      // Dans le cas d'une copie (voir fonction copy)
+      if(isset($data['remplace'])){
+	$insert['remplace']=$data['remplace'];
+      }
       $db=new db();
       $db->insert2("planningHebdo",$insert);
       $this->error=$db->error;
@@ -91,7 +97,53 @@ class planningHebdo{
     }
   }
 
+  public function copy($data){
+    $this->id=$data['id'];
+    $this->fetch();
+    $actuel=$this->elements[0];
+
+    // Copie de l'ancien planning avec modification des dates de début et/ou de fin
+    $pl=array();
+    // Copie de l'ancien planning
+    $pl[0]=$actuel;
+    $pl[0]['remplace']=$actuel['id'];
+
+    // Modification de la date de fin de la copie et création d'une 2ème copie si les 2 dates sont modifiées
+    if($data['debut']>$actuel['debut'] and $data['fin']<$actuel['fin']){
+      $pl[0]['fin']=date("Y-m-d",strtotime("-1 Day",strtotime($data['debut'])));
+      $pl[1]=$actuel;
+      $pl[1]['debut']=date("Y-m-d",strtotime("+1 Day",strtotime($data['fin'])));
+      $pl[1]['remplace']=$actuel['id'];
+    }
+    // Modification de la date de fin de la copie si la date de début est modifiée
+    elseif($data['debut']>$actuel['debut']){
+      $pl[0]['fin']=date("Y-m-d",strtotime("-1 Day",strtotime($data['debut'])));
+    }
+    // Modification de la date de début de la copie si la date de fin est modifiée
+    elseif($data['fin']<$actuel['fin']){
+      $pl[0]['debut']=date("Y-m-d",strtotime("+1 Day",strtotime($data['fin'])));
+    }
+
+    // Enregistrement des copies
+    foreach($pl as $elem){
+      $p=new planningHebdo();
+      $p->add($elem);
+    }
+    
+    // Enregistrement du nouveau planning
+    $data['remplace']=$actuel['id'];
+    $p=new planningHebdo();
+    $p->add($data);
+  }
+  
   public function fetch(){
+    // Recherche des services
+    $p=new personnel();
+    $p->fetch();
+    foreach($p->elements as $elem){
+      $services[$elem['id']]=$elem['service'];
+    }
+
     // Filtre de recherche
     $filter="1";
 
@@ -156,10 +208,33 @@ class planningHebdo{
       foreach($db->result as $elem){
 	$elem['temps']=unserialize($elem['temps']);
 	$elem['nom']=nom($elem['perso_id']);
+	$elem['service']=$services[$elem['perso_id']];
 	$this->elements[]=$elem;
       }
     }
-  usort($this->elements,"cmp_debut_fin_nom");
+
+    // Tri par date de début, fin et nom des agents
+    usort($this->elements,"cmp_debut_fin_nom");
+
+    // Classe les plannings copiés (remplaçant) après les plannings d'origine
+    $tab=array();
+    foreach($this->elements as $elem){
+      if(!$elem['remplace']){
+	$tab[]=$elem;
+	foreach($this->elements as $elem2){
+	  if($elem2['remplace']==$elem['id']){
+	    $tab[]=$elem2;
+	  }
+	}
+      }
+    }
+
+    // $tab est vide si on accède directement à un planning copié,
+    // on remplace donc $this->elements par $tab seulement si $tab n'est pas vide.
+    if(!empty($tab)){
+      $this->elements=$tab;
+    }
+
   }
 
   public function getConfig(){

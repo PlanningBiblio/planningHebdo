@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 23 septembre 2013
+Dernière modification : 7 octobre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -86,7 +86,13 @@ EOD;
 <div id='nouveauPlanning' style='display:none;'>
 Nouveau planning de présence
 <br/>
-<form name='form1' method='post' action='index.php' onsubmit='return verif_form("debut=date1;fin=date2Obligatoire","form1");'>
+<?php
+if(!$configHebdo['periodesDefinies']){
+  echo "<form name='form1' method='post' action='index.php' onsubmit='return plHebdoVerifForm();'>";
+}else{
+  echo "<form name='form1' method='post' action='index.php' onsubmit='return verif_form(\"debut=date1;fin=date2Obligatoire\",\"form1\");'>";
+}
+?>
 <input type='hidden' name='page' value='plugins/planningHebdo/valid.php' />
 <input type='hidden' name='action' value='ajout' />
 
@@ -210,8 +216,8 @@ $(".select2").change(function(){plHebdoCalculHeures($(this),2);});
 <div id='historique'>
 Mes plannings de présence
 <br/>
-<table border='0' cellspacing='0' style='width:750px;'>
-<tr class='th' style='vertical-align:top;text-align:center;'><td>&nbsp;</td><td>Début</td><td>Fin</td><td>Validation</td><td>Actuel</td></tr>
+<table class='tableauStandard'>
+<tr class='th' style='vertical-align:top;text-align:center;'><td>&nbsp;</td><td>Début</td><td>Fin</td><td>Saisie</td><td>Validation</td><td>Actuel</td><td>Commentaires</td></tr>
 <?php
 $p=new planningHebdo();
 $p->perso_id=$_SESSION['login_id'];
@@ -222,15 +228,21 @@ foreach($p->elements as $elem){
   $actuel=$elem['actuel']?"Oui":null;
   $validation="N'est pas validé";
   if($elem['valide']){
-    $validation=nom($elem['valide']).", ".dateFr($elem['validation']);
+    $validation=nom($elem['valide']).", ".dateFr($elem['validation'],true);
   }
+  $planningRemplace=$elem['remplace']==0?dateFr($elem['saisie'],true):$planningRemplace;
+  $commentaires=$elem['remplace']?"Remplace le planning <br/>du $planningRemplace":null;
+  $arrow=$elem['remplace']?"&rdsh;":null;
+
   echo "<tr style='text-align:center;' class='$class'>";
-  echo "<td><a href='index.php?page=plugins/planningHebdo/modif.php&amp;id={$elem['id']}&amp;retour=monCompte.php'/>";
+  echo "<td>$arrow <a href='index.php?page=plugins/planningHebdo/modif.php&amp;id={$elem['id']}&amp;retour=monCompte.php'/>";
     echo "<img src='img/modif.png' alt='Voir' border='0'/></a></td>";
   echo "<td>".dateFr($elem['debut'])."</td>";
   echo "<td>".dateFr($elem['fin'])."</td>";
+  echo "<td>".dateFr($elem['saisie'],true)."</td>";
   echo "<td>$validation</td>";
   echo "<td>$actuel</td>";
+  echo "<td>$commentaires</td>";
   echo "</tr>\n";
 }
 

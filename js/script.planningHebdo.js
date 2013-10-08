@@ -6,7 +6,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/js/script.planningHebdo.js
 Création : 26 août 2013
-Dernière modification : 17 septembre 2013
+Dernière modification : 2 octobre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -82,4 +82,41 @@ function plHebdoSupprime(id){
     f=file("index.php?page=plugins/planningHebdo/supprime.php&id="+id);
     document.location.reload(false);
   }
+}
+
+function plHebdoVerifForm(){
+  debut=$("input[name=debut]").val();
+  fin=$("input[name=fin]").val();
+  id=$("input[name=id]").val();
+  perso_id=$("input[name=perso_id]").val();
+  
+  id=id?"&id="+id:null;
+  perso_id=perso_id?"&perso_id="+perso_id:null;
+  
+  if(!debut || !fin){
+    alert("Les dates de début et de fin sont obligatoires");
+    return false;
+  }
+  
+  if(fin<debut){
+    alert("La date de fin doit être supérieure à la date de début");
+    return false;
+  }
+  
+  f=file("plugins/planningHebdo/ajax.verifPlannings.php?debut="+debut+"&fin="+fin+id+perso_id);
+  tmp=f.split("###");
+  if(tmp[1]=="OK"){
+    return true;
+  }
+  
+  if(perso_id){
+    message="Un planning est enregistré pour cet agent pour la période du "+dateFr(tmp[1])+" au "+dateFr(tmp[2])
+      +"\nVeuillez modifier les dates de début et/ou de fin ou modifier le premier planning."
+  }
+  else{
+    message="Vous avez déjà enregistré un planning pour la période du "+dateFr(tmp[1])+" au "+dateFr(tmp[2])
+      +"\nVeuillez modifier les dates de début et/ou de fin ou modifier le premier planning."
+  }
+  alert(message);
+  return false;
 }

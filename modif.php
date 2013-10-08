@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 5 septembre 2013
+Dernière modification : 4 octobre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -35,14 +35,22 @@ $temps=$p->elements[0]['temps'];
 $valide=$p->elements[0]['valide'];
 
 // Sécurité
-if(!in_array(24,$droits) and $perso_id!=$_SESSION['login_id']){
+$admin=in_array(24,$droits)?true:false;
+if(!$admin and $perso_id!=$_SESSION['login_id']){
   echo "<div id='acces_refuse'>Accès refusé</div>\n";
   include "include/footer.php";
   exit;
 }
+
+// Modif autorisée si n'est pas validé ou si validé avec des périodes non définies (BSB).
+// Dans le 2eme cas copie du planning avec modification des dates
+$action="modif";
 $modifAutorisee=true;
-if(!in_array(24,$droits) and $valide){
+if(!$admin and $valide and $configHebdo['periodesDefinies']){
   $modifAutorisee=false;
+}
+if(!$admin and $valide){
+  $action="copie";
 }
 
 ?>
@@ -51,13 +59,20 @@ if(!in_array(24,$droits) and $valide){
 <h3>Planning de présence</h3>
 <?php echo "Planning de <b>".nom($perso_id,"prenom nom")."</b> du ".dateFr($debut1)." au ".dateFr($fin1);?>
 <div id='planning'>
-<form name='form1' method='post' action='index.php' onsubmit='return verif_form("debut=date1;fin=date2Obligatoire","form1");'>
+<?php
+if(!$configHebdo['periodesDefinies']){
+  echo "<form name='form1' method='post' action='index.php' onsubmit='return plHebdoVerifForm();'>\n";
+}else{
+  echo "<form name='form1' method='post' action='index.php' onsubmit='return verif_form(\"debut=date1;fin=date2Obligatoire\",\"form1\");'>\n";
+}
+?>
 <input type='hidden' name='page' value='plugins/planningHebdo/valid.php' />
-<input type='hidden' name='action' value='modif' />
+<input type='hidden' name='action' value='<?php echo $action; ?>' />
 <input type='hidden' name='validation' value='0' />
 <input type='hidden' name='retour' value='<?php echo $_GET['retour']; ?>' />
 <input type='hidden' name='id' value='<?php echo $id; ?>' />
 <input type='hidden' name='perso_id' value='<?php echo $perso_id; ?>' />
+<input type='hidden' name='valide' value='<?php echo $valide; ?>' />
 
 <!-- Affichage des tableaux avec la sélection des horaires -->
 <?php
@@ -108,6 +123,10 @@ for($j=0;$j<$config['nb_semaine'];$j++){
 if(!$modifAutorisee){
   echo "<p>Vos horaires ont été validés. Pour les modifier, contactez votre chef de service.</p>\n";
 }
+elseif($valide and !$admin){
+  echo "<p><b>Vos horaires ont été validés.</b><br/>Si vous souhaitez les changer, modifiez la date de début d'effet.<br/>";
+  echo "Vos nouveaux horaires devront être validés par un administrateur. Ils seront effectifs à partir de la date de début choisie.</p>\n";
+}
 
     
 
@@ -120,7 +139,8 @@ if($modifAutorisee){
 
 echo "<table style='width:750px;'>\n";
 
-if($modifAutorisee and !$configHebdo['periodesDefinies']){
+// if($modifAutorisee and !$configHebdo['periodesDefinies']){
+if(!$configHebdo['periodesDefinies']){
   echo <<<EOD
     <tr>
     <td>Date de début</td>
@@ -141,9 +161,13 @@ echo <<<EOD
   <input type='button' value='Retour' onclick='location.href="index.php?page=plugins/planningHebdo/{$_GET['retour']}";' />
 EOD;
 
-if(in_array(24,$droits)){
+if($admin){
   echo "<input type='submit' value='Enregistrer les modifications SANS valider' style='margin-left:30px;'/>\n";
-  echo "<input type='button' value='Enregistrer et VALIDER'  style='margin-left:30px;' onclick='document.forms[\"form1\"].validation.value=1;document.forms[\"form1\"].submit();'/></td></tr>\n";
+  if(!$configHebdo['periodesDefinies']){
+    echo "<input type='button' value='Enregistrer et VALIDER'  style='margin-left:30px;' onclick='document.forms[\"form1\"].validation.value=1;if(plHebdoVerifForm()){document.forms[\"form1\"].submit();}'/></td></tr>\n";
+  }else{
+    echo "<input type='button' value='Enregistrer et VALIDER'  style='margin-left:30px;' onclick='document.forms[\"form1\"].validation.value=1;document.forms[\"form1\"].submit();'/></td></tr>\n";
+  }
 }
 elseif($modifAutorisee){
   echo "<input type='submit' value='Enregistrer les modifications' style='margin-left:30px;'/>\n";
