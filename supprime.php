@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/supprime.php
 Création : 17 septembre 2013
-Dernière modification : 17 septembre 2013
+Dernière modification : 9 octobre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -18,4 +18,6 @@ Appelé par la fonction JS plHebdoSupprime (plugins/planningHebdo/js/script.plan
 $id=$_GET['id'];
 $db=new db();
 $db->delete("planningHebdo","id=$id");
+$db=new db();
+$db->update("planningHebdo","remplace='0'","remplace='$id'");
 ?>
