@@ -1,6 +1,6 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.2.9
+Planning Biblio, Plugin planningHebdo Version 1.2.10
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.txt et COPYING.txt
 Copyright (C) 2013 - Jérôme Combes
@@ -17,7 +17,7 @@ Fichier appelé en arrière plan par la fonction JS plHebdoVerifForm (js/script.
 
 session_start();
 
-$version="1.2.9";
+$version="1.2.10";
 include "../../include/config.php";
 
 // Filtre permettant de ne rechercher que les plannings de l'agent sélectionné

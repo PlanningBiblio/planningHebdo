@@ -1,3 +1,15 @@
+***	Version 1.2.10	(Jérôme Combes, 22 Octobre 2013)		***
+- Améliorations :
+Possibilité de trier le tableau des plannings de présence coté administrateur
+
+***	Version 1.2.9	(Jérôme Combes, 11 Octobre 2013)		***
+- Améliorations :
+Modification des plannings de présence en cours d'année, même s'ils sont validés (copies)
+
+***	Version 1.2.8	(Jérôme Combes, 27 Septembre 2013)		***
+- Améliorations :
+Supprime les plannings de présences des agents lors de leur suppression définitive
+
 ***	Version 1.2.7	(Jérôme Combes, 24 Septembre 2013)		***
 - Améliorations :
 Modification du titre "Récupération des samedis" -> "Récupération" dans le menu "Mon compte"
