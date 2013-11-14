@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 22 ocotbre 2013
+Dernière modification : 14 novembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -30,11 +30,6 @@ if(isset($_GET['reset'])){
 $_SESSION['oups']['planningHebdoDebut']=$debut;
 $_SESSION['oups']['planningHebdoFin']=$fin;
 $_SESSION['oups']['planningHebdoAgent']=$agent;
-
-// Les dates arrivent en format J/MM/AAAA, 
-// DatePicker les veut en format MM/JJ/AAAA pour les convertir ensuite en JJ/MM/AAAA
-$debutDatePicker=preg_replace("/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2,4})/","$2/$1/$3",$debut);
-$finDatePicker=preg_replace("/([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{2,4})/","$2/$1/$3",$fin);
 
 // Recherche des plannings
 $p=new planningHebdo();
@@ -63,8 +58,8 @@ echo <<<EOD
 <h3>Plannings de présence</h3>
 <form name='form' method='get' action='index.php'>
 <input type='hidden' name='page' value='plugins/planningHebdo/index.php' />
-Début : <input type='text' name='debut' class='datepicker' value='$debutDatePicker' />
-&nbsp;&nbsp;Fin : <input type='text' name='fin' class='datepicker' value='$finDatePicker' />
+Début : <input type='text' name='debut' class='datepicker' value='$debut' />
+&nbsp;&nbsp;Fin : <input type='text' name='fin' class='datepicker' value='$fin' />
 &nbsp;&nbsp;Agent : <input type='text' name='agent' value='$agent' />
 &nbsp;&nbsp;<input type='submit' value='OK' />
 &nbsp;&nbsp;<input type='button' value='Effacer' onclick='location.href="index.php?page=plugins/planningHebdo/index.php&amp;reset="' />
@@ -110,7 +105,6 @@ echo "</tbody></table>\n";
 <script type='text/JavaScript'>
 $(document).ready(function() {
   $(".datepicker").datepicker();
-  $(".datepicker").datepicker("option", "dateFormat", "dd/mm/yy");
 
   $("#tablePlanningHebdo").dataTable({
     "bJQueryUI": true,
