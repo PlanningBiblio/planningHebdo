@@ -1,3 +1,7 @@
+***	Version 1.2.11	(Jérôme Combes, 14 novembre 2013)		***
+- Améliorations :
+Modification des paramétres de datePicker suite à l'utilisation de la traduction FR dans le planning
+
 ***	Version 1.2.10	(Jérôme Combes, 22 Octobre 2013)		***
 - Améliorations :
 Possibilité de trier le tableau des plannings de présence coté administrateur
