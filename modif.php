@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 8 octobre 2013
+Dernière modification : 26 novembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -122,7 +122,7 @@ for($j=0;$j<$config['nb_semaine'];$j++){
   echo "Nombre d'heures : <font id='heures_{$j}' style='font-weight:bold;'>&nbsp;</font><br/>\n";
 }
 
-if(!$modifAutorisee){
+if(!$modifAutorisee or $configHebdo['periodesDefinies']){
   echo "<p><b class='important'>Vos horaires ont été validés.</b><br/>Pour les modifier, contactez votre chef de service.</p>\n";
 }
 elseif($valide and !$admin){
@@ -180,7 +180,7 @@ if($admin){
   }else{
     echo "<input type='button' value='Enregistrer et VALIDER'  style='margin-left:30px;' onclick='document.forms[\"form1\"].validation.value=1;document.forms[\"form1\"].submit();'/>";
   }
-  if($valide){
+  if($valide and !$configHebdo['periodesDefinies']){
     echo "<input type='button' value='Enregistrer une copie' style='margin-left:30px;' onclick='$(\"input[name=action]\").val(\"copie\");$(\"form[name=form1]\").submit();'/>\n";
   }
   echo "</td></tr>\n";
