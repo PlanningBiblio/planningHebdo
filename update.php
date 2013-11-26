@@ -1,6 +1,6 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.2.11
+Planning Biblio, Plugin planningHebdo Version 1.2.12
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.txt et COPYING.txt
 Copyright (C) 2013 - Jérôme Combes
@@ -23,7 +23,7 @@ if($_SESSION['login_id']!=1){
   exit;
 }
 
-$version="1.2.11";
+$version="1.2.12";
 include_once "../../include/config.php";
 
 $sql=array();
