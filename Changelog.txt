@@ -1,3 +1,12 @@
+***	Version 1.2.13	(Jérôme Combes, 9 décembre 2013)		***
+- Correction de bugs :
+Corrige le tri par dates dans le tableau administrateur des plannings de présence
+
+***	Version 1.2.12	(Jérôme Combes, 26 novembre 2013)		***
+- Correction de bugs :
+N'affiche plus la possibilité de modifier des plannings de présence validés lorsque l'on utilise les 
+périodes définies
+
 ***	Version 1.2.11	(Jérôme Combes, 14 novembre 2013)		***
 - Améliorations :
 Modification des paramétres de datePicker suite à l'utilisation de la traduction FR dans le planning
