@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 14 novembre 2013
+Dernière modification : 9 décembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -76,9 +76,11 @@ Début : <input type='text' name='debut' class='datepicker' value='$debut' />
 EOD;
 foreach($p->elements as $elem){
   $actuel=$elem['actuel']?"Oui":null;
-  $validation="<b>N'est pas validé</b>";
+  $validation="<font style='display:none;'>En attente</font><b>En attente</b>";
   if($elem['valide']){
-    $validation=nom($elem['valide']).", ".dateFr($elem['validation'],true);
+    $validation="<font style='display:none;'>Valid {$elem['validation']}</font>";
+    $validation.=dateFr($elem['validation'],true);
+    $validation.=", ".nom($elem['valide']);
   }
   $planningRemplace=$elem['remplace']==0?dateFr($elem['saisie'],true):$planningRemplace;
   $commentaires=$elem['remplace']?"Remplace le planning <br/>du $planningRemplace":null;
@@ -111,7 +113,7 @@ $(document).ready(function() {
     "sPaginationType": "full_numbers",
     "bStateSave": false,
     "aaSorting" : [[3,"asc"],[4,"asc"],[1,"asc"]],
-    "aoColumns" : [{"bSortable":false},{"bSortable":true},{"bSortable":true},{"bSortable":true},{"bSortable":true},{"bSortable":true},{"bSortable":true},{"bSortable":true},{"bSortable":true},],
+    "aoColumns" : [{"bSortable":false},{"bSortable":true},{"bSortable":true},{"sType": "date-fr"},{"sType": "date-fr"},{"sType": "date-fr"},{"bSortable":true},{"bSortable":true},{"bSortable":true},],
     "aLengthMenu" : [[25,50,75,100,-1],[25,50,75,100,"Tous"]],
     "iDisplayLength" : 25,
     "oLanguage" : {"sUrl" : "js/dataTables/french.txt"}
