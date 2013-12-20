@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 26 novembre 2013
+Dernière modification : 19 décembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -30,6 +30,9 @@ $p->id=$id;
 $p->fetch();
 $debut1=$p->elements[0]['debut'];
 $fin1=$p->elements[0]['fin'];
+$debut1Fr=dateFr($debut1);
+$fin1Fr=dateFr($fin1);
+
 $perso_id=$p->elements[0]['perso_id'];
 $temps=$p->elements[0]['temps'];
 $valide=$p->elements[0]['valide'];
@@ -58,7 +61,7 @@ if(!$admin and $valide){
 
 <!-- Formulaire Planning-->
 <h3>Planning de présence</h3>
-<?php echo "Planning de <b>".nom($perso_id,"prenom nom")."</b> du ".dateFr($debut1)." au ".dateFr($fin1);?>
+<?php echo "Planning de <b>".nom($perso_id,"prenom nom")."</b> du $debut1Fr au $fin1Fr";?>
 <div id='planning'>
 <?php
 if(!$configHebdo['periodesDefinies']){
@@ -156,9 +159,9 @@ if(!$configHebdo['periodesDefinies']){
   echo <<<EOD
     <tr>
     <td>Date de début</td>
-    <td><input type='text' name='debut' value='$debut1'/>&nbsp;<img src='img/calendrier.gif' onclick='calendrier("debut","form1");' alt='calendrier' /></td>
+    <td><input type='text' name='debut' value='$debut1Fr' class='datepicker'/></td>
     <td>Date de fin</td>
-    <td><input type='text' name='fin' value='$fin1'/>&nbsp;<img src='img/calendrier.gif' onclick='calendrier("fin","form1");' alt='calendrier' /></td></tr>
+    <td><input type='text' name='fin' value='$fin1Fr' class='datepicker'/></tr>
 EOD;
 }
 else{

@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/class.planningHebdo.php
 Création : 23 juillet 2013
-Dernière modification : 8 octobre 2013
+Dernière modification : 20 décembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -43,6 +43,12 @@ class planningHebdo{
   }
 
   public function add($data){
+    // Modification du format des dates de début et de fin si elles sont en français
+    if(array_key_exists("debut",$data)){
+      $data['debut']=preg_replace("/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/","$3-$2-$1",$data['debut']);
+      $data['fin']=preg_replace("/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/","$3-$2-$1",$data['fin']);
+    }
+
     // Si $data['annee'] : il y a 2 périodes distinctes avec des horaires définis 
     // (horaires normaux et horaires réduits) soit 2 tableaux à insérer
     if(array_key_exists("annee",$data)){
@@ -98,6 +104,10 @@ class planningHebdo{
   }
 
   public function copy($data){
+    // Modification du format des dates de début et de fin si elles sont en français
+    $data['debut']=preg_replace("/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/","$3-$2-$1",$data['debut']);
+    $data['fin']=preg_replace("/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/","$3-$2-$1",$data['fin']);
+
     $this->id=$data['id'];
     $this->fetch();
     $actuel=$this->elements[0];
@@ -257,14 +267,19 @@ class planningHebdo{
 	$db=new db();
 	$db->select("planningHebdoPeriodes","*","`annee`='$annee'","ORDER BY `annee`");
 	if($db->result){
-	  $dates[$i++]=unserialize($db->result[0]['dates']);
+	  $dates[$i]=unserialize($db->result[0]['dates']);
+	  $datesFr[$i]=array_map("dateFr",$dates[$i]);
+	  $i++;
 	}
 	else{
-	  $dates[$i++]=null;
+	  $dates[$i]=null;
+	  $datesFr[$i]=null;
+	  $i++;
 	}
       }
     }
   $this->periodes=$dates;
+  $this->periodesFr=$datesFr;
   }
 
   public function suppression_agents($liste){
@@ -273,6 +288,10 @@ class planningHebdo{
   }
 
   public function update($data){
+    // Modification du format des dates de début et de fin si elles sont en français
+    $data['debut']=preg_replace("/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/","$3-$2-$1",$data['debut']);
+    $data['fin']=preg_replace("/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/","$3-$2-$1",$data['fin']);
+
     $temps=serialize($data['temps']);
     $update=array("debut"=>$data['debut'],"fin"=>$data['fin'],"temps"=>$temps,"modif"=>$_SESSION['login_id'],"modification"=>date("Y-m-d H:i:s"));
     if($data['validation']){
@@ -346,6 +365,9 @@ class planningHebdo{
 
   public function updatePeriodes($data){
     $annee=array($data['annee'][0],$data['annee'][1]);
+    // Convertion des dates JJ/MM/AAAA => AAAA-MM-JJ
+    $data['dates'][0]=array_map("dateFr",$data['dates'][0]);
+    $data['dates'][1]=array_map("dateFr",$data['dates'][1]);
     $dates=array(serialize($data['dates'][0]),serialize($data['dates'][1]));
 
     for($i=0;$i<count($annee);$i++){

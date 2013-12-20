@@ -6,7 +6,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/js/script.planningHebdo.js
 Création : 26 août 2013
-Dernière modification : 2 octobre 2013
+Dernière modification : 19 décembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -85,8 +85,8 @@ function plHebdoSupprime(id){
 }
 
 function plHebdoVerifForm(){
-  debut=$("input[name=debut]").val();
-  fin=$("input[name=fin]").val();
+  debut=$("input[name=debut]").val().replace(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/g,"$3-$2-$1");
+  fin=$("input[name=fin]").val().replace(/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/g,"$3-$2-$1");
   id=$("input[name=id]").val();
   perso_id=$("input[name=perso_id]").val();
   
@@ -119,4 +119,17 @@ function plHebdoVerifForm(){
   }
   alert(message);
   return false;
+}
+
+function plHebdoVerifFormPeriodesDefinies(){
+  var result=true;
+  $(".selectAnnee").each(function(){
+    if(!$(this).val()){
+      result=false;
+    }
+  });
+  if(!result){
+    alert("Vous devez choisir l'année universitaire.");
+  }
+  return result; 
 }

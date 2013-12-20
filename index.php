@@ -106,8 +106,6 @@ echo "</tbody></table>\n";
 
 <script type='text/JavaScript'>
 $(document).ready(function() {
-  $(".datepicker").datepicker();
-
   $("#tablePlanningHebdo").dataTable({
     "bJQueryUI": true,
     "sPaginationType": "full_numbers",

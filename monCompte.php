@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 8 octobre 2013
+Dernière modification : 20 décembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -23,8 +23,21 @@ $configHebdo=$p->config;
 
 // Initialisation des variables
 // Plannings de présence
-$annee_courante=date("n")<9?(date("Y")-1)."-".(date("Y")):(date("Y"))."-".(date("Y")+1);
-$annee_suivante=date("n")<9?(date("Y"))."-".(date("Y")+1):(date("Y")+1)."-".(date("Y")+2);
+// Années universitaires (si utilisation des périodes définies)
+$tmp=array();
+$tmp[0]=date("n")<9?(date("Y")-1)."-".(date("Y")):(date("Y"))."-".(date("Y")+1);
+$tmp[1]=date("n")<9?(date("Y"))."-".(date("Y")+1):(date("Y")+1)."-".(date("Y")+2);
+
+// Contrôle si les périodes sont renseignées avant d'afficher les années universitaires dans le menu déroulant
+$annees=array();
+foreach($tmp as $elem){
+  $p=new planningHebdo();
+  $p->dates=array($elem);
+  $p->getPeriodes();
+  if($p->periodes[0][0] and $p->periodes[0][1] and $p->periodes[0][2] and $p->periodes[0][3]){
+    $annees[]=$elem;
+  }
+}
 
 // Crédits (congés, récupérations)
 if(in_array("conges",$plugins)){
@@ -87,10 +100,10 @@ EOD;
 Nouveau planning de présence
 <br/>
 <?php
-if(!$configHebdo['periodesDefinies']){
-  echo "<form name='form1' method='post' action='index.php' onsubmit='return plHebdoVerifForm();'>";
+if($configHebdo['periodesDefinies']){
+  echo "<form name='form1' method='post' action='index.php' onsubmit='return plHebdoVerifFormPeriodesDefinies();'>";
 }else{
-  echo "<form name='form1' method='post' action='index.php' onsubmit='return verif_form(\"debut=date1;fin=date2Obligatoire\",\"form1\");'>";
+  echo "<form name='form1' method='post' action='index.php' onsubmit='return plHebdoVerifForm();'>";
 }
 ?>
 <input type='hidden' name='page' value='plugins/planningHebdo/valid.php' />
@@ -113,14 +126,12 @@ for($j=0;$j<$config['nb_semaine'];$j++){
   echo "<br/>\n";
   // Si périodes définies : les dates de début et de fin sont forcées et il y a 2 plannings à saisir (horaires normaux et horaires réduits)
   if($configHebdo['periodesDefinies']){
-    echo <<<EOD
-      Sélectionnez l'année
-      <select name='annee'>
-	<option value='$annee_courante'>$annee_courante</option>
-	<option value='$annee_suivante'>$annee_suivante</option>
-	</select>
-EOD;
-
+    echo "Sélectionnez l'année\n";
+    echo "<select name='annee' class='selectAnnee'>\n";
+    foreach($annees as $annee){
+      echo "<option value='$annee'>$annee</option>\n";
+    }
+    echo "</select>\n";
     echo "<br/><br/>Horaires normaux <font id='heures_{$j}' style='font-weight:bold;position:absolute;left:300px;'>&nbsp;</font><br/>";
   }
   echo "<table border='1' cellspacing='0' id='tableau{$j}'>\n";
@@ -191,9 +202,9 @@ if(!$configHebdo['periodesDefinies']){
   <table style='width:750px;'>
   <tr>
   <td>Date de début</td>
-  <td><input type='text' name='debut' />&nbsp;<img src='img/calendrier.gif' onclick='calendrier("debut","form1");' alt='calendrier' /></td>
+  <td><input type='text' name='debut' class='datepicker'/></td>
   <td>Date de fin</td>
-  <td><input type='text' name='fin' />&nbsp;<img src='img/calendrier.gif' onclick='calendrier("fin","form1");' alt='calendrier' /></td>
+  <td><input type='text' name='fin' class='datepicker'/></td>
   <td><input type='submit' value='Valider' />
   </tr>
   </table>
@@ -216,15 +227,16 @@ $(".select2").change(function(){plHebdoCalculHeures($(this),2);});
 <div id='historique'>
 Mes plannings de présence
 <br/>
-<table class='tableauStandard'>
-<tr class='th' style='vertical-align:top;text-align:center;'><td>&nbsp;</td><td>Début</td><td>Fin</td><td>Saisie</td><td>Validation</td><td>Actuel</td><td>Commentaires</td></tr>
+<table id='tablePresence'>
+<thead>
+<tr><th>&nbsp;</th><th>Début</th><th>Fin</th><th>Saisie</th><th>Validation</th><th>Actuel</th><th>Commentaires</th></tr>
+</thead>
+<tbody>
 <?php
 $p=new planningHebdo();
 $p->perso_id=$_SESSION['login_id'];
 $p->fetch();
-$class="tr1";
 foreach($p->elements as $elem){
-  $class=$class=="tr1"?"tr2":"tr1";
   $actuel=$elem['actuel']?"Oui":null;
   $validation="N'est pas validé";
   if($elem['valide']){
@@ -234,7 +246,7 @@ foreach($p->elements as $elem){
   $commentaires=$elem['remplace']?"Remplace le planning <br/>du $planningRemplace":null;
   $arrow=$elem['remplace']?"<font style='font-size:20pt;'>&rdsh;</font>":null;
 
-  echo "<tr style='text-align:center;' class='$class'>";
+  echo "<tr>";
   echo "<td style='white-space:nowrap;'>$arrow <a href='index.php?page=plugins/planningHebdo/modif.php&amp;id={$elem['id']}&amp;retour=monCompte.php'/>";
     echo "<img src='img/modif.png' alt='Voir' border='0'/></a></td>";
   echo "<td>".dateFr($elem['debut'])."</td>";
@@ -247,6 +259,7 @@ foreach($p->elements as $elem){
 }
 
 ?>
+</tbody>
 </table>
 </div> <!-- Historique' -->
 
@@ -287,3 +300,18 @@ else{
 }
 ?>
 </div> <!-- motDePasse -->
+
+<script type='text/JavaScript'>
+$(document).ready(function() {
+  $("#tablePresence").dataTable({
+    "bJQueryUI": true,
+    "sPaginationType": "full_numbers",
+    "bStateSave": true,
+    "aaSorting" : [[1,"asc"],[2,"asc"],[3,"asc"],],
+    "aoColumns" : [{"bSortable":false},{"sType": "date-fr"},{"sType": "date-fr"},{"sType": "date-fr"},{"bSortable":true},{"bSortable":true},{"bSortable":true},],
+    "aLengthMenu" : [[25,50,75,100,-1],[25,50,75,100,"Tous"]],
+    "iDisplayLength" : 25,
+    "oLanguage" : {"sUrl" : "js/dataTables/french.txt"}
+  });
+});
+</script>
