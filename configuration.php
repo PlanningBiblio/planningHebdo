@@ -37,14 +37,7 @@ if($_POST){
     $message="La configuration a été modifiée avec succés."; $type="highlight";
   }
   if($message){
-    echo <<<EOD
-      <div id='information'>$message</div>
-      <script type='text/JavaScript'>
-      errorHighlight($("#information"),"$type");
-      position($('#information'),60,"center");
-      setTimeout("$('#information').hide()",5000);
-      </script>
-EOD;
+    echo "<script type='text/JavaScript'>information('$message','$type');</script>\n";
   }
 }
 

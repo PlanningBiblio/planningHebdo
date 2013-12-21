@@ -49,14 +49,7 @@ if(isset($_GET['message'])){
     case "Modif-erreur" : $message="Une erreur est survenue lors de la modification du planning."; $type="error";	break;
   }
   if($message){
-    echo <<<EOD
-      <div id='information'>$message</div>
-      <script type='text/JavaScript'>
-      errorHighlight($("#information"),"$type");
-      position($('#information'),60,"center");
-      setTimeout("$('#information').hide()",5000);
-      </script>
-EOD;
+    echo "<script type='text/JavaScript'>information('$message','$type');</script>\n";
   }
 }
 
