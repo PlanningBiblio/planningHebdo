@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 20 décembre 2013
+Dernière modification : 21 décembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -27,6 +27,7 @@ $configHebdo=$p->config;
 $tmp=array();
 $tmp[0]=date("n")<9?(date("Y")-1)."-".(date("Y")):(date("Y"))."-".(date("Y")+1);
 $tmp[1]=date("n")<9?(date("Y"))."-".(date("Y")+1):(date("Y")+1)."-".(date("Y")+2);
+$message=null;
 
 // Contrôle si les périodes sont renseignées avant d'afficher les années universitaires dans le menu déroulant
 $annees=array();
@@ -53,13 +54,21 @@ if(in_array("conges",$plugins)){
 // Notifications
 if(isset($_GET['message'])){
   switch($_GET['message']){
-    case "Ajout-OK" : $message="Le planning a été ajouté avec succés."; $class="MessageOK";	break;
-    case "Ajout-erreur" : $message="Une erreur est survenue lors de l'enregistrement du planning."; $class="MessageErreur"; break;
-    case "Modif-OK" : $message="Le planning a été modifié avec succés."; $class="MessageOK";	break;
-    case "Modif-erreur" : $message="Une erreur est survenue lors de la modification du planning."; $class="MessageErreur"; break;
+    case "Ajout-OK" : $message="Le planning a été ajouté avec succés."; $type="highlight";	break;
+    case "Ajout-erreur" : $message="Une erreur est survenue lors de l'enregistrement du planning."; $type="error"; break;
+    case "Modif-OK" : $message="Le planning a été modifié avec succés."; $type="highlight";	break;
+    case "Modif-erreur" : $message="Une erreur est survenue lors de la modification du planning."; $type="error"; break;
   }
-  echo "<div class='$class' id='information'>$message</div>\n";
-  echo "<script type='text/JavaScript'>setTimeout(\"document.getElementById('information').style.display='none'\",3000);</script>\n";
+  if($message){
+    echo <<<EOD
+      <div id='information'>$message</div>
+      <script type='text/JavaScript'>
+      errorHighlight($("#information"),"$type");
+      position($('#information'),80,"center");
+      setTimeout("$('#information').hide()",5000);
+      </script>
+EOD;
+  }
 }
 
 ?>

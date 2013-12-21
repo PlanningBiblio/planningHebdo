@@ -7,7 +7,7 @@ Copyright (C) 2013 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 9 décembre 2013
+Dernière modification : 21 décembre 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -30,6 +30,7 @@ if(isset($_GET['reset'])){
 $_SESSION['oups']['planningHebdoDebut']=$debut;
 $_SESSION['oups']['planningHebdoFin']=$fin;
 $_SESSION['oups']['planningHebdoAgent']=$agent;
+$message=null;
 
 // Recherche des plannings
 $p=new planningHebdo();
@@ -42,17 +43,22 @@ $p->fetch();
 // Notifications
 if(isset($_GET['message'])){
   switch($_GET['message']){
-    case "Ajout-OK" : $message="Le planning a été ajouté avec succés."; $class="MessageOK";	break;
-    case "Ajout-erreur" : $message="Une erreur est survenue lors de l'enregistrement du planning."; $class="MessageErreur"; break;
-    case "Modif-OK" : $message="Le planning a été modifié avec succés."; $class="MessageOK";	break;
-    case "Modif-erreur" : $message="Une erreur est survenue lors de la modification du planning."; $class="MessageErreur"; break;
+    case "Ajout-OK" :	$message="Le planning a été ajouté avec succés."; $type="highlight";	break;
+    case "Ajout-erreur" : $message="Une erreur est survenue lors de l'enregistrement du planning.";  $type="error";	break;
+    case "Modif-OK" : 	$message="Le planning a été modifié avec succés."; $type="highlight";	break;
+    case "Modif-erreur" : $message="Une erreur est survenue lors de la modification du planning."; $type="error";	break;
   }
   if($message){
-    echo "<div class='$class' id='information'>$message</div>\n";
-    echo "<script type='text/JavaScript'>setTimeout(\"document.getElementById('information').style.display='none'\",3000);</script>\n";
+    echo <<<EOD
+      <div id='information'>$message</div>
+      <script type='text/JavaScript'>
+      errorHighlight($("#information"),"$type");
+      position($('#information'),60,"center");
+      setTimeout("$('#information').hide()",5000);
+      </script>
+EOD;
   }
 }
-
 
 echo <<<EOD
 <h3>Plannings de présence</h3>

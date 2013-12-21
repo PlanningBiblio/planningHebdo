@@ -27,19 +27,26 @@ if($_POST){
   $p=new planningHebdo();
   $p->updatePeriodes($_POST);
   $error=$p->error?true:$error;
+  $message=null;
 
   // Notifications
   if($error){
-    $message="Une erreur est survenue lors de la modification de la configuration."; $class="MessageErreur";
+    $message="Une erreur est survenue lors de la modification de la configuration."; $type="error";
   }
   else{
-    $message="La configuration a été modifiée avec succés."; $class="MessageOK";
+    $message="La configuration a été modifiée avec succés."; $type="highlight";
   }
-  echo "<div class='$class' id='information'>$message</div>\n";
-  echo "<script type='text/JavaScript'>setTimeout(\"document.getElementById('information').style.display='none'\",3000);</script>\n";
+  if($message){
+    echo <<<EOD
+      <div id='information'>$message</div>
+      <script type='text/JavaScript'>
+      errorHighlight($("#information"),"$type");
+      position($('#information'),60,"center");
+      setTimeout("$('#information').hide()",5000);
+      </script>
+EOD;
+  }
 }
-
-
 
 // Recherche de la config
 $p=new planningHebdo();
