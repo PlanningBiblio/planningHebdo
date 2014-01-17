@@ -3,7 +3,7 @@
 Planning Biblio, Plugin planningHebdo Version 1.3
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.txt et COPYING.txt
-Copyright (C) 2013 - Jérôme Combes
+Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 25 juillet 2013
