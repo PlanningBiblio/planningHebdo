@@ -7,7 +7,7 @@ Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 21 décembre 2013
+Dernière modification : 4 février 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -207,7 +207,7 @@ if(!$configHebdo['periodesDefinies']){
   <td><input type='text' name='debut' class='datepicker'/></td>
   <td>Date de fin</td>
   <td><input type='text' name='fin' class='datepicker'/></td>
-  <td><input type='submit' value='Valider' />
+  <td><input type='submit' value='Valider' class='ui-button' />
   </tr>
   </table>
 EOD;

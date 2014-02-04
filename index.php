@@ -7,7 +7,7 @@ Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 21 décembre 2013
+Dernière modification : 4 février 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -60,8 +60,8 @@ echo <<<EOD
 Début : <input type='text' name='debut' class='datepicker' value='$debut' />
 &nbsp;&nbsp;Fin : <input type='text' name='fin' class='datepicker' value='$fin' />
 &nbsp;&nbsp;Agent : <input type='text' name='agent' value='$agent' />
-&nbsp;&nbsp;<input type='submit' value='OK' />
-&nbsp;&nbsp;<input type='button' value='Effacer' onclick='location.href="index.php?page=plugins/planningHebdo/index.php&amp;reset="' />
+&nbsp;&nbsp;<input type='submit' value='OK' class='ui-button' />
+&nbsp;&nbsp;<input type='button' value='Effacer' onclick='location.href="index.php?page=plugins/planningHebdo/index.php&amp;reset="' class='ui-button' />
 <a href='index.php?page=plugins/planningHebdo/configuration.php' style='position:absolute;right:10px;'>Configuration</a>
 </form>
 

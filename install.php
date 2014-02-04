@@ -7,7 +7,7 @@ Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/install.php
 Création : 23 juillet 2013
-Dernière modification : 4 octobre 2013
+Dernière modification : 4 février 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -42,7 +42,7 @@ $sql[]="CREATE TABLE `{$dbprefix}planningHebdoConfig` (`id` INT(11) NOT NULL AUT
 $sql[]="CREATE TABLE `{$dbprefix}planningHebdoPeriodes` (`id` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY, `annee` VARCHAR(9), `dates` TEXT);";
 
 // Configuration
-$sql[]="INSERT INTO `{$dbprefix}planningHebdoConfig` (`nom`,`valeur`) VALUES ('periodesDefinies','0');";
+$sql[]="INSERT INTO `{$dbprefix}planningHebdoConfig` (`nom`,`valeur`) VALUES ('periodesDefinies','0'),('notifications','droit');";
 
 // Menu administration
 $sql[]="INSERT INTO `{$dbprefix}menu` (`niveau1`,`niveau2`,`titre`,`url`) VALUES (50,75,'Plannings de présence','plugins/planningHebdo/index.php');";

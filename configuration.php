@@ -7,7 +7,7 @@ Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 25 juillet 2013
-Dernière modification : 20 décembre 2013
+Dernière modification : 4 février 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -51,6 +51,8 @@ $annee_courante=date("n")<9?(date("Y")-1)."-".(date("Y")):(date("Y"))."-".(date(
 $annee_suivante=date("n")<9?(date("Y"))."-".(date("Y")+1):(date("Y")+1)."-".(date("Y")+2);
 $checked[0]=$configHebdo['periodesDefinies']?"checked='checked'":null;
 $checked[1]=$configHebdo['periodesDefinies']?null:"checked='checked'";
+$select[0]=$configHebdo['notifications']=="droit"?"selected='selected'":null;
+$select[1]=$configHebdo['notifications']=="Mail-Planning"?"selected='selected'":null;
 
 // Recherche des dates de début et de fin de chaque période
 $p->dates=array($annee_courante,$annee_suivante);
@@ -86,9 +88,16 @@ echo <<<EOD
   <td>Début <input type='text' name='dates[1][2]' value='{$dates[1][2]}' class='datepicker' />
   <td>Fin <input type='text' name='dates[1][3]' value='{$dates[1][3]}' class='datepicker' />
   </td></tr>
+<tr><td style='padding:20px 0 20px 0;'>Envoyer les notifications : </td>
+  <td colspan='2' style='padding:20px 0 20px 0;'><select name='notifications' style='width:100%;'>
+    <option value=''></option>
+    <option {$select[0]} value='droit'>Aux agents ayant le droit de gérer les plannings de présences</option>
+    <option {$select[1]} value='Mail-Planning'>A la cellule planning</option>
+    </select>
+  </td></tr>
 <tr><td colspan='3' style='padding:20px 0 0 30px;'>
-  <input type='button' value='Retour' onclick='document.location.href="index.php?page=plugins/planningHebdo/index.php";' />
-  <input type='submit' value='Valider' style='margin-left:30px;'/></td></tr>
+  <input type='button' value='Retour' onclick='document.location.href="index.php?page=plugins/planningHebdo/index.php";' class='ui-button' />
+  <input type='submit' value='Valider' style='margin-left:30px;' class='ui-button' /></td></tr>
 </table>
 </form>
 EOD;

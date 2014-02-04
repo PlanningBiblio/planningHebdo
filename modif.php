@@ -7,7 +7,7 @@ Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 19 décembre 2013
+Dernière modification : 4 février 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -173,23 +173,23 @@ EOD;
 }
 echo <<<EOD
   <tr><td colspan='4' style='padding-top:20px;'>
-  <input type='button' value='Retour' onclick='location.href="index.php?page=plugins/planningHebdo/{$_GET['retour']}";' />
+  <input type='button' value='Retour' onclick='location.href="index.php?page=plugins/planningHebdo/{$_GET['retour']}";' class='ui-button' />
 EOD;
 
 if($admin){
-  echo "<input type='submit' value='Enregistrer les modifications SANS valider' style='margin-left:30px;'/>\n";
+  echo "<input type='submit' value='Enregistrer les modifications SANS valider' style='margin-left:30px;' class='ui-button' />\n";
   if(!$configHebdo['periodesDefinies']){
-    echo "<input type='button' value='Enregistrer et VALIDER'  style='margin-left:30px;' onclick='document.forms[\"form1\"].validation.value=1;if(plHebdoVerifForm()){document.forms[\"form1\"].submit();}'/>";
+    echo "<input type='button' value='Enregistrer et VALIDER'  style='margin-left:30px;' onclick='document.forms[\"form1\"].validation.value=1;if(plHebdoVerifForm()){document.forms[\"form1\"].submit();}' class='ui-button' />";
   }else{
-    echo "<input type='button' value='Enregistrer et VALIDER'  style='margin-left:30px;' onclick='document.forms[\"form1\"].validation.value=1;document.forms[\"form1\"].submit();'/>";
+    echo "<input type='button' value='Enregistrer et VALIDER'  style='margin-left:30px;' onclick='document.forms[\"form1\"].validation.value=1;document.forms[\"form1\"].submit();' class='ui-button' />";
   }
   if($valide and !$configHebdo['periodesDefinies']){
-    echo "<input type='button' value='Enregistrer une copie' style='margin-left:30px;' onclick='$(\"input[name=action]\").val(\"copie\");$(\"form[name=form1]\").submit();'/>\n";
+    echo "<input type='button' value='Enregistrer une copie' style='margin-left:30px;' onclick='$(\"input[name=action]\").val(\"copie\");$(\"form[name=form1]\").submit();' class='ui-button' />\n";
   }
   echo "</td></tr>\n";
 }
 elseif($modifAutorisee){
-  echo "<input type='submit' value='Enregistrer les modifications' style='margin-left:30px;'/>\n";
+  echo "<input type='submit' value='Enregistrer les modifications' style='margin-left:30px;' class='ui-button' />\n";
 }
 
 ?>

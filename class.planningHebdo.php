@@ -7,7 +7,7 @@ Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/class.planningHebdo.php
 Création : 23 juillet 2013
-Dernière modification : 20 décembre 2013
+Dernière modification : 4 février 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -84,15 +84,21 @@ class planningHebdo{
 
     // Envoi d'un mail aux responsables
     $destinataires=array();
-    $p=new personnel();
-    $p->fetch("nom");
-
-    foreach($p->elements as $elem){
-      $tmp=unserialize($elem['droits']);
-      if(in_array(24,$tmp)){
-	$destinataires[]=$elem['mail'];
+    $this->getConfig();
+    if($this->config['notifications']=="droit"){
+      $p=new personnel();
+      $p->fetch("nom");
+      foreach($p->elements as $elem){
+	$tmp=unserialize($elem['droits']);
+	if(in_array(24,$tmp)){
+	  $destinataires[]=$elem['mail'];
+	}
       }
     }
+    elseif($this->config['notifications']=="Mail-Planning"){
+      $destinataires=explode(";",$GLOBALS['config']['Mail-Planning']);
+    }
+
     if(!empty($destinataires)){
       $destinataires=join(";",$destinataires);
       $sujet="Nouveau planning de présence, ".html_entity_decode(nom($_SESSION['login_id'],"prenom nom"),ENT_QUOTES|ENT_IGNORE,"UTF-8");
@@ -321,22 +327,28 @@ class planningHebdo{
     }
 
     // Envoi d'un mail aux responsables et à l'agent concerné
-    // L'agent
     $destinataires=array();
+
+    // Les admins
+    $this->getConfig();
+    if($this->config['notifications']=="droit"){
+      $p=new personnel();
+      $p->fetch("nom");
+      foreach($p->elements as $elem){
+	$tmp=unserialize($elem['droits']);
+	if(in_array(24,$tmp)){
+	  $destinataires[]=$elem['mail'];
+	}
+      }
+    }
+    elseif($this->config['notifications']=="Mail-Planning"){
+      $destinataires=explode(";",$GLOBALS['config']['Mail-Planning']);
+    }
+    // L'agent
     $p=new personnel();
     $p->fetchById($data['perso_id']);
     $destinataires[]=$p->elements[0]['mail'];
 
-    // Les admins
-    $p=new personnel();
-    $p->fetch("nom");
-
-    foreach($p->elements as $elem){
-      $tmp=unserialize($elem['droits']);
-      if(in_array(24,$tmp)){
-	$destinataires[]=$elem['mail'];
-      }
-    }
     if(!empty($destinataires)){
       if($data['validation']){
 	$sujet="Validation d'un planning de présence, ".html_entity_decode(nom($data['perso_id'],"prenom nom"),ENT_QUOTES|ENT_IGNORE,"UTF-8");
@@ -356,11 +368,13 @@ class planningHebdo{
   }
   
   public function updateConfig($data){
-    $set=array("valeur"=>$data['periodesDefinies']);
-    $where=array("nom"=>"periodesDefinies");
     $db=new db();
-    $db->update2("planningHebdoConfig",$set,$where);
+    $db->update2("planningHebdoConfig",array("valeur"=>$data['periodesDefinies']),array("nom"=>"periodesDefinies"));
     $this->error=$db->error?true:false;
+
+    $db=new db();
+    $db->update2("planningHebdoConfig",array("valeur"=>$data['notifications']),array("nom"=>"notifications"));
+    $this->error=$db->error?true:$this->error;
   }
 
   public function updatePeriodes($data){

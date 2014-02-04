@@ -7,7 +7,7 @@ Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/update.php
 Création : 17 septembre 2013
-Dernière modification : 4 octobre 2013
+Dernière modification : 4 février 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -33,7 +33,10 @@ $sql=array();
 // $sql[]="INSERT INTO `{$dbprefix}acces` (`nom`,`groupe_id`,`groupe`,`page`) VALUES ('Planning Hebdo - suppression','24','Validation des plannings de présences','plugins/planningHebdo/supprime.php');";
 
 // Mise à jour du 4 octobre
-$sql[]="ALTER TABLE `{$dbprefix}planningHebdo` ADD `remplace` INT(11) NOT NULL DEFAULT '0';";
+// $sql[]="ALTER TABLE `{$dbprefix}planningHebdo` ADD `remplace` INT(11) NOT NULL DEFAULT '0';";
+
+// Mise à jour du 4 février
+$sql[]="INSERT INTO `{$dbprefix}planningHebdoConfig` (`nom`,`valeur`) VALUES ('notifications','droit');";
 
 ?>
 <!-- Entête HTML -->
