@@ -213,7 +213,7 @@ if(!$configHebdo['periodesDefinies']){
 EOD;
 }
 else{
-  echo "<input type='submit' value='Valider' />\n";
+  echo "<input type='submit' value='Valider' class='ui-button' />\n";
 }
 
 ?>
