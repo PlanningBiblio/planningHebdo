@@ -7,7 +7,7 @@ Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 4 février 2014
+Dernière modification : 25 février 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -49,6 +49,11 @@ if(in_array("conges",$plugins)){
   $credits['reliquat']=$p->elements[0]['congesReliquat'];
   $credits['anticipation']=$p->elements[0]['congesAnticipation'];
   $credits['recuperation']=$p->elements[0]['recupSamedi'];
+  $credits['joursAnnuel']=number_format($credits['annuel']/7,2,","," ");
+  $credits['joursConges']=number_format($credits['conges']/7,2,","," ");
+  $credits['joursReliquat']=number_format($credits['reliquat']/7,2,","," ");
+  $credits['joursAnticipation']=number_format($credits['anticipation']/7,2,","," ");
+  $credits['joursRecuperation']=number_format($credits['recuperation']/7,2,","," ");
 }
 
 // Notifications
@@ -276,13 +281,14 @@ if(in_array("conges",$plugins)){
   <table class='tableauFiches'>
   <tr><td style='font-weight:bold;' colspan='2'>Congés</td></tr>
 EOD;
-  echo "<tr><td>Crédit annuel</td><td style='text-align:right;'>".heure4($credits['annuel'])."</td></tr>\n";
-  echo "<tr><td>Crédit restant</td><td style='text-align:right;'>".heure4($credits['conges'])."</td></tr>\n";
-  echo "<tr><td>Reliquat</td><td style='text-align:right;'>".heure4($credits['reliquat'])."</td></tr>\n";
-//   echo "<tr><td>Pris par anticipation</td><td style='text-align:right;'>".heure4($credits['anticipation'])."</td></tr>\n";
+  echo "<tr><td>Crédit annuel</td><td style='text-align:right;'>".heure4($credits['annuel'])."</td><td style='text-align:right;'>{$credits['joursAnnuel']} jours</td></tr>\n";
+  echo "<tr><td>Crédit restant</td><td style='text-align:right;'>".heure4($credits['conges'])."</td><td style='text-align:right;'>{$credits['joursConges']} jours</td></tr>\n";
+  echo "<tr><td>Reliquat</td><td style='text-align:right;'>".heure4($credits['reliquat'])."</td><td style='text-align:right;'>{$credits['joursReliquat']} jours</td></tr>\n";
+  echo "<tr><td>Pris par anticipation</td><td style='text-align:right;'>".heure4($credits['anticipation'])."</td><td style='text-align:right;'>{$credits['joursAnticipation']} jours</td></tr>\n";
   echo "<tr><td style='font-weight:bold;padding-top:20px;' colspan='2'>Récupérations</td></tr>\n";
-  echo "<tr><td>Crédit</td><td style='text-align:right;'>".heure4($credits['recuperation'])."</td></tr>\n";
+  echo "<tr><td>Crédit</td><td style='text-align:right;'>".heure4($credits['recuperation'])."</td><td style='text-align:right;'>{$credits['joursRecuperation']} jours</td></tr>\n";
   echo "</table>\n";
+  echo "<p style='font-style:italic;margin:30px 0 0 10px;'>Le nombre de jours est calculé sur la base de 7 heures par jour.</p>\n";
   echo "</div>\n";
 }
 ?>
