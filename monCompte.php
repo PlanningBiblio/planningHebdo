@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.1
+Planning Biblio, Plugin planningHebdo Version 1.3.3
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.txt et COPYING.txt
 Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 25 février 2014
+Dernière modification : 27 février 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -129,29 +129,32 @@ $jours=Array("Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche");
 ?>
 
 <?php
-for($j=0;$j<$config['nb_semaine'];$j++){
-  echo "<br/>\n";
-  // Si périodes définies : les dates de début et de fin sont forcées et il y a 2 plannings à saisir (horaires normaux et horaires réduits)
-  if($configHebdo['periodesDefinies']){
-    echo "Sélectionnez l'année\n";
-    echo "<select name='annee' class='selectAnnee'>\n";
-    foreach($annees as $annee){
-      echo "<option value='$annee'>$annee</option>\n";
-    }
-    echo "</select>\n";
-    echo "<br/><br/>Horaires normaux <font id='heures_{$j}' style='font-weight:bold;position:absolute;left:300px;'>&nbsp;</font><br/>";
+// Si périodes définies : les dates de début et de fin sont forcées et il y a 2 plannings à saisir (horaires normaux et horaires réduits)
+if($configHebdo['periodesDefinies']){
+  echo "<p>Sélectionnez l'année\n";
+  echo "<select name='annee' class='selectAnnee'>\n";
+  foreach($annees as $annee){
+    echo "<option value='$annee'>$annee</option>\n";
   }
-  echo "<table border='1' cellspacing='0' id='tableau{$j}'>\n";
+  echo "</select></p>\n";
+}
+
+for($j=0;$j<$config['nb_semaine'];$j++){
+  if($configHebdo['periodesDefinies']){
+    echo "<br/>Horaires normaux <font id='heures_{$j}' style='font-weight:bold;position:absolute;left:300px;'>&nbsp;</font><br/>";
+  }
+  echo "<table border='1' cellspacing='0' id='tableau{$j}' style='margin-bottom:30px;>\n";
   echo "<tr style='text-align:center;'><td style='width:150px;'>{$cellule[$j]}</td><td style='width:150px;'>Heure d'arrivée</td>";
   echo "<td style='width:150px;'>Début de pause</td><td style='width:150px;'>Fin de pause</td>";
   echo "<td style='width:150px;'>Heure de départ</td>";
   if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
     echo "<td>Site</td>";
   }
+  echo "<td style='width:150px;'>Temps</td>";
   echo "</tr>\n";
   for($i=$debut[$j];$i<$fin[$j];$i++){
     $k=$i-($j*7)-1;
-    echo "<tr><td>{$jours[$k]}</td><td>".selectTemps($i-1,0,null,"select")."</td><td>".selectTemps($i-1,1,null,"select")."</td>";
+    echo "<tr style='text-align:center;'><td>{$jours[$k]}</td><td>".selectTemps($i-1,0,null,"select")."</td><td>".selectTemps($i-1,1,null,"select")."</td>";
     echo "<td>".selectTemps($i-1,2,null,"select")."</td><td>".selectTemps($i-1,3,null,"select")."</td>";
     if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
       echo "<td><select name='temps[".($i-1)."][4]'>\n";
@@ -160,6 +163,7 @@ for($j=0;$j<$config['nb_semaine'];$j++){
       echo "<option value='2' >{$config['Multisites-site2']}</option>\n";
       echo "</select></td>";
     }
+    echo "<td id='heures_{$j}_$i'></td>\n";
     echo "</tr>\n";
   }
   echo "</table>\n";
@@ -173,13 +177,14 @@ for($j=0;$j<$config['nb_semaine'];$j++){
   if($configHebdo['periodesDefinies']){
     echo "<br/>\n";
     echo "Horaires réduits <font id='heures2_{$j}' style='font-weight:bold;;position:absolute;left:300px;'>&nbsp;</font><br/>";
-    echo "<table border='1' cellspacing='0' id='tableau{$j}'>\n";
+    echo "<table border='1' cellspacing='0' id='tableau{$j}' style='margin-bottom:30px;'>\n";
     echo "<tr style='text-align:center;'><td style='width:150px;'>{$cellule[$j]}</td><td style='width:150px;'>Heure d'arrivée</td>";
     echo "<td style='width:150px;'>Début de pause</td><td style='width:150px;'>Fin de pause</td>";
     echo "<td style='width:150px;'>Heure de départ</td>";
     if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
       echo "<td>Site</td>";
     }
+    echo "<td style='width:150px;'>Temps</td>";
     echo "</tr>\n";
     for($i=$debut[$j];$i<$fin[$j];$i++){
       $k=$i-($j*7)-1;
@@ -192,6 +197,7 @@ for($j=0;$j<$config['nb_semaine'];$j++){
 	echo "<option value='2' >{$config['Multisites-site2']}</option>\n";
 	echo "</select></td>";
       }
+      echo "<td id='heures2_{$j}_$i'></td>\n";
       echo "</tr>\n";
     }
     echo "</table>\n";

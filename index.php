@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.1
+Planning Biblio, Plugin planningHebdo Version 1.3.3
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.txt et COPYING.txt
 Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 4 février 2013
+Dernière modification : 27 février 2013
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -21,20 +21,16 @@ include "class.planningHebdo.php";
 $tri=isset($_GET['tri'])?$_GET['tri']:"`debut`,`fin`,`nom`,`prenom`";
 $debut=isset($_GET['debut'])?$_GET['debut']:(array_key_exists("planningHebdoDebut",$_SESSION['oups'])?$_SESSION['oups']['planningHebdoDebut']:null);
 $fin=isset($_GET['fin'])?$_GET['fin']:(array_key_exists("planningHebdoFin",$_SESSION['oups'])?$_SESSION['oups']['planningHebdoFin']:null);
-$agent=isset($_GET['agent'])?$_GET['agent']:(array_key_exists("planningHebdoAgent",$_SESSION['oups'])?$_SESSION['oups']['planningHebdoAgent']:null);
 if(isset($_GET['reset'])){
   $debut=null;
   $fin=null;
-  $agent=null;
 }
 $_SESSION['oups']['planningHebdoDebut']=$debut;
 $_SESSION['oups']['planningHebdoFin']=$fin;
-$_SESSION['oups']['planningHebdoAgent']=$agent;
 $message=null;
 
 // Recherche des plannings
 $p=new planningHebdo();
-$p->agent=$agent;
 $p->debut=dateFr($debut);
 $p->fin=dateFr($fin);
 $p->tri=$tri;
@@ -59,7 +55,6 @@ echo <<<EOD
 <input type='hidden' name='page' value='plugins/planningHebdo/index.php' />
 Début : <input type='text' name='debut' class='datepicker' value='$debut' />
 &nbsp;&nbsp;Fin : <input type='text' name='fin' class='datepicker' value='$fin' />
-&nbsp;&nbsp;Agent : <input type='text' name='agent' value='$agent' />
 &nbsp;&nbsp;<input type='submit' value='OK' class='ui-button' />
 &nbsp;&nbsp;<input type='button' value='Effacer' onclick='location.href="index.php?page=plugins/planningHebdo/index.php&amp;reset="' class='ui-button' />
 <a href='index.php?page=plugins/planningHebdo/configuration.php' style='position:absolute;right:10px;'>Configuration</a>
@@ -108,7 +103,7 @@ $(document).ready(function() {
   $("#tablePlanningHebdo").dataTable({
     "bJQueryUI": true,
     "sPaginationType": "full_numbers",
-    "bStateSave": false,
+    "bStateSave": true,
     "aaSorting" : [[3,"asc"],[4,"asc"],[1,"asc"]],
     "aoColumns" : [{"bSortable":false},{"bSortable":true},{"bSortable":true},{"sType": "date-fr"},{"sType": "date-fr"},{"sType": "date-fr"},{"bSortable":true},{"bSortable":true},{"bSortable":true},],
     "aLengthMenu" : [[25,50,75,100,-1],[25,50,75,100,"Tous"]],

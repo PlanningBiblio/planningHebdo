@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.1
+Planning Biblio, Plugin planningHebdo Version 1.3.3
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.txt et COPYING.txt
 Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 4 février 2014
+Dernière modification : 27 février 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -101,6 +101,7 @@ for($j=0;$j<$config['nb_semaine'];$j++){
   if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
     echo "<td>Site</td>";
   }
+  echo "<td style='width:150px;'>Temps</td>";
   echo "</tr>\n";
   for($i=$debut[$j];$i<$fin[$j];$i++){
     $k=$i-($j*7)-1;
@@ -110,8 +111,8 @@ for($j=0;$j<$config['nb_semaine'];$j++){
       echo "<td>".selectTemps($i-1,2,null,"select")."</td><td>".selectTemps($i-1,3,null,"select")."</td>";
     }
     else{
-      echo "<td>".heure2($temps[$i-1][0])."</td><td>".heure2($temps[$i-1][1])."</td>";
-      echo "<td>".heure2($temps[$i-1][2])."</td><td>".heure2($temps[$i-1][3])."</td>";
+      echo "<td id='temps_".($i-1)."_0'>".heure2($temps[$i-1][0])."</td><td id='temps_".($i-1)."_1'>".heure2($temps[$i-1][1])."</td>";
+      echo "<td id='temps_".($i-1)."_2'>".heure2($temps[$i-1][2])."</td><td id='temps_".($i-1)."_3'>".heure2($temps[$i-1][3])."</td>";
     }
     if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
       echo "<td><select name='temps[".($i-1)."][4]'><option value=''>&nbsp;</option>\n";
@@ -119,13 +120,14 @@ for($j=0;$j<$config['nb_semaine'];$j++){
       echo "<option value='2' >{$config['Multisites-site2']}</option>\n";
       echo "</select></td>";
     }
+    echo "<td id='heures_{$j}_$i'></td>\n";
     echo "</tr>\n";
   }
   echo "</table>\n";
   echo "Nombre d'heures : <font id='heures_{$j}' style='font-weight:bold;'>&nbsp;</font><br/>\n";
 }
 
-if(!$modifAutorisee or $configHebdo['periodesDefinies']){
+if(!$modifAutorisee){
   echo "<p><b class='important'>Vos horaires ont été validés.</b><br/>Pour les modifier, contactez votre chef de service.</p>\n";
 }
 elseif($valide and !$admin){
@@ -133,28 +135,25 @@ elseif($valide and !$admin){
   echo "Vos nouveaux horaires seront enregistrés et devront être validés par un administrateur.<br/>";
   echo "Les anciens horaires seront conservés en attendant la validation des nouveaux.</p>\n";
 }
-elseif($valide and $admin){
-  echo "<p style='width:850px;text-align:justify;'><b class='important'>Vos horaires ont été validés.</b><br/>";
+elseif($valide and $admin and !$configHebdo['periodesDefinies']){
+  echo "<p style='width:850px;text-align:justify;'><b class='important'>Ces horaires ont été validés.</b><br/>";
   echo "En tant qu'administrateur, vous pouvez les modifier et les enregistrer en tant que copie.<br/>";
   echo "Dans ce cas, modifiez la date de début et/ou de fin d'effet. ";
-  echo "Vos nouveaux horaires seront enregistrés et devront ensuite être validés. ";
+  echo "Les nouveaux horaires seront enregistrés et devront ensuite être validés. ";
   echo "Les anciens horaires seront conservés en attendant la validation des nouveaux.<br/>";
-  echo "Vous pouvez également les enregistrer directement mais dans ce cas, vous ne conserverez pas les 
-    anciens horaires.</p>\n";
+  echo "Vous pouvez également les enregistrer directement mais dans ce cas, vous ne conserverez pas les anciens horaires.</p>\n";
+}
+elseif($valide and $admin and $configHebdo['periodesDefinies']){
+  echo "<p style='width:850px;text-align:justify;'><b class='important'>Ces horaires ont été validés.</b><br/>";
+  echo "En tant qu'administrateur, vous avez toujours la possibilité de les modifier et de les valider.</p>\n";
 }
 
-    
-
 // Choix de la période d'utilisation et validation
-echo "<br/>\n";
-
-if($modifAutorisee){
-  echo "<b>Choisissez la période d'utilisation et validez</b> :\n";
+if($modifAutorisee and !$configHebdo['periodesDefinies']){
+  echo "<br/><b>Choisissez la période d'utilisation et validez</b> :\n";
 }
 
 echo "<table style='width:900px;'>\n";
-
-// if($modifAutorisee and !$configHebdo['periodesDefinies']){
 if(!$configHebdo['periodesDefinies']){
   echo <<<EOD
     <tr>
@@ -165,16 +164,11 @@ if(!$configHebdo['periodesDefinies']){
 EOD;
 }
 else{
-  echo <<<EOD
-    <tr>
-    <td><input type='hidden' name='debut' value='$debut1'/></td>
-    <td><input type='hidden' name='fin' value='$fin1'/></td></tr>
-EOD;
+  echo "<tr><td><input type='hidden' name='debut' value='$debut1'/></td>\n";
+  echo "<td><input type='hidden' name='fin' value='$fin1'/></td></tr>\n";
 }
-echo <<<EOD
-  <tr><td colspan='4' style='padding-top:20px;'>
-  <input type='button' value='Retour' onclick='location.href="index.php?page=plugins/planningHebdo/{$_GET['retour']}";' class='ui-button' />
-EOD;
+echo "<tr><td colspan='4' style='padding-top:20px;'>\n";
+echo "<input type='button' value='Retour' onclick='location.href=\"index.php?page=plugins/planningHebdo/{$_GET['retour']}\";' class='ui-button' />\n";
 
 if($admin){
   echo "<input type='submit' value='Enregistrer les modifications SANS valider' style='margin-left:30px;' class='ui-button' />\n";

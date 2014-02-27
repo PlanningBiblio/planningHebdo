@@ -1,12 +1,12 @@
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.1
+Planning Biblio, Plugin planningHebdo Version 1.3.3
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.txt et COPYING.txt
 Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/js/script.planningHebdo.js
 Création : 26 août 2013
-Dernière modification : 19 décembre 2013
+Dernière modification : 27 février 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -32,7 +32,6 @@ function plHebdoCalculHeures(object,num){
   }
   debut=numero*7;
   fin=debut+7;
-  
   heures=0;
   elements=document.forms["form1"].elements;
   
@@ -42,6 +41,14 @@ function plHebdoCalculHeures(object,num){
       fin1=elements["temps"+num+"["+i+"][1]"].value;
       debut2=elements["temps"+num+"["+i+"][2]"].value;
       fin2=elements["temps"+num+"["+i+"][3]"].value;
+    }
+    else{
+      debut1=heure5($("#temps"+num+"_"+i+"_0").text());
+      fin1=heure5($("#temps"+num+"_"+i+"_1").text());
+      debut2=heure5($("#temps"+num+"_"+i+"_2").text());
+      fin2=heure5($("#temps"+num+"_"+i+"_3").text());
+    }
+    if(debut1){
       diff=0;
       // Journée avec pause le midi
       if(debut1 && fin1 && debut2 && fin2){
@@ -61,6 +68,11 @@ function plHebdoCalculHeures(object,num){
 	diff=diffMinutes(debut1,fin2);
       }
       heures+=diff;
+      
+      // Affichage du nombre d'heure pour chaque ligne
+      if(diff){
+	$("#heures"+num+"_"+numero+"_"+(i+1)).html(heure4(diff/60));
+      }
     }
   }
   heures=heure4(heures/60);
