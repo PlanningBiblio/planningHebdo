@@ -7,7 +7,7 @@ Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 27 février 2014
+Dernière modification : 20 mars 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -40,10 +40,13 @@ foreach($tmp as $elem){
   }
 }
 
+// Informations sur l'agent
+$p=new personnel();
+$p->fetchById($_SESSION['login_id']);
+$sites=$p->elements[0]['sites'];
+
 // Crédits (congés, récupérations)
 if(in_array("conges",$plugins)){
-  $p=new personnel();
-  $p->fetchById($_SESSION['login_id']);
   $credits['annuel']=$p->elements[0]['congesAnnuel'];
   $credits['conges']=$p->elements[0]['congesCredit'];
   $credits['reliquat']=$p->elements[0]['congesReliquat'];
@@ -147,7 +150,7 @@ for($j=0;$j<$config['nb_semaine'];$j++){
   echo "<tr style='text-align:center;'><td style='width:150px;'>{$cellule[$j]}</td><td style='width:150px;'>Heure d'arrivée</td>";
   echo "<td style='width:150px;'>Début de pause</td><td style='width:150px;'>Fin de pause</td>";
   echo "<td style='width:150px;'>Heure de départ</td>";
-  if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
+  if($config['Multisites-nombre']>1){
     echo "<td>Site</td>";
   }
   echo "<td style='width:150px;'>Temps</td>";
@@ -156,11 +159,14 @@ for($j=0;$j<$config['nb_semaine'];$j++){
     $k=$i-($j*7)-1;
     echo "<tr style='text-align:center;'><td>{$jours[$k]}</td><td>".selectTemps($i-1,0,null,"select")."</td><td>".selectTemps($i-1,1,null,"select")."</td>";
     echo "<td>".selectTemps($i-1,2,null,"select")."</td><td>".selectTemps($i-1,3,null,"select")."</td>";
-    if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
+    if($config['Multisites-nombre']>1){
       echo "<td><select name='temps[".($i-1)."][4]'>\n";
-      echo "<option value=''>&nbsp;</option>\n";
-      echo "<option value='1' >{$config['Multisites-site1']}</option>\n";
-      echo "<option value='2' >{$config['Multisites-site2']}</option>\n";
+      if(count($sites)>1){
+	echo "<option value=''>&nbsp;</option>\n";
+      }
+      foreach($sites as $site){
+	echo "<option value='$site' >{$config["Multisites-site{$site}"]}</option>\n";
+      }
       echo "</select></td>";
     }
     echo "<td id='heures_{$j}_$i'></td>\n";
@@ -181,7 +187,7 @@ for($j=0;$j<$config['nb_semaine'];$j++){
     echo "<tr style='text-align:center;'><td style='width:150px;'>{$cellule[$j]}</td><td style='width:150px;'>Heure d'arrivée</td>";
     echo "<td style='width:150px;'>Début de pause</td><td style='width:150px;'>Fin de pause</td>";
     echo "<td style='width:150px;'>Heure de départ</td>";
-    if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
+    if($config['Multisites-nombre']>1){
       echo "<td>Site</td>";
     }
     echo "<td style='width:150px;'>Temps</td>";
@@ -190,7 +196,7 @@ for($j=0;$j<$config['nb_semaine'];$j++){
       $k=$i-($j*7)-1;
       echo "<tr><td>{$jours[$k]}</td><td>".selectTemps($i-1,0,2,"select2")."</td><td>".selectTemps($i-1,1,2,"select2")."</td>";
       echo "<td>".selectTemps($i-1,2,2,"select2")."</td><td>".selectTemps($i-1,3,2,"select2")."</td>";
-      if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
+      if($config['Multisites-nombre']>1){
 	echo "<td><select name='temps2[".($i-1)."][4]'>\n";
 	echo "<option value=''>&nbsp;</option>\n";
 	echo "<option value='1' >{$config['Multisites-site1']}</option>\n";

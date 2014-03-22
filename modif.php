@@ -5,9 +5,9 @@ Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2014 - Jérôme Combes
 
-Fichier : plugins/planningHebdo/index.php
+Fichier : plugins/planningHebdo/modif.php
 Création : 23 juillet 2013
-Dernière modification : 27 février 2014
+Dernière modification : 22 mars 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -57,6 +57,10 @@ if(!$admin and $valide){
   $action="copie";
 }
 
+// Informations sur l'agents
+$p=new personnel();
+$p->fetchById($perso_id);
+$sites=$p->elements[0]['sites'];
 ?>
 
 <!-- Formulaire Planning-->
@@ -98,7 +102,7 @@ for($j=0;$j<$config['nb_semaine'];$j++){
   echo "<tr style='text-align:center;'><td style='width:150px;'>{$cellule[$j]}</td><td style='width:150px;'>Heure d'arrivée</td>";
   echo "<td style='width:150px;'>Début de pause</td><td style='width:150px;'>Fin de pause</td>";
   echo "<td style='width:150px;'>Heure de départ</td>";
-  if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
+  if($config['Multisites-nombre']>1){
     echo "<td>Site</td>";
   }
   echo "<td style='width:150px;'>Temps</td>";
@@ -114,10 +118,15 @@ for($j=0;$j<$config['nb_semaine'];$j++){
       echo "<td id='temps_".($i-1)."_0'>".heure2($temps[$i-1][0])."</td><td id='temps_".($i-1)."_1'>".heure2($temps[$i-1][1])."</td>";
       echo "<td id='temps_".($i-1)."_2'>".heure2($temps[$i-1][2])."</td><td id='temps_".($i-1)."_3'>".heure2($temps[$i-1][3])."</td>";
     }
-    if($config['Multisites-nombre']>1 and $config['Multisites-agentsMultisites']){
-      echo "<td><select name='temps[".($i-1)."][4]'><option value=''>&nbsp;</option>\n";
-      echo "<option value='1' >{$config['Multisites-site1']}</option>\n";
-      echo "<option value='2' >{$config['Multisites-site2']}</option>\n";
+    if($config['Multisites-nombre']>1){
+      echo "<td><select name='temps[".($i-1)."][4]'>\n";
+      if(count($sites)>1){
+	echo "<option value=''>&nbsp;</option>\n";
+      }
+      foreach($sites as $site){
+	$selected=$temps[$i-1][4]==$site?"selected='selected'":null;
+	echo "<option value='$site' $selected >{$config["Multisites-site{$site}"]}</option>\n";
+      }
       echo "</select></td>";
     }
     echo "<td id='heures_{$j}_$i'></td>\n";
