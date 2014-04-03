@@ -267,7 +267,7 @@ foreach($p->elements as $elem){
 
   echo "<tr>";
   echo "<td style='white-space:nowrap;'>$arrow <a href='index.php?page=plugins/planningHebdo/modif.php&amp;id={$elem['id']}&amp;retour=monCompte.php'/>";
-    echo "<img src='img/modif.png' alt='Voir' border='0'/></a></td>";
+    echo "<img src='themes/default/images/modif.png' alt='Voir' border='0'/></a></td>";
   echo "<td>".dateFr($elem['debut'])."</td>";
   echo "<td>".dateFr($elem['fin'])."</td>";
   echo "<td>".dateFr($elem['saisie'],true)."</td>";

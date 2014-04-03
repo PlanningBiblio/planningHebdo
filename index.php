@@ -82,9 +82,9 @@ foreach($p->elements as $elem){
 
   echo "<tr>";
   echo "<td style='white-space:nowrap;'>$arrow <a href='index.php?page=plugins/planningHebdo/modif.php&amp;id={$elem['id']}&amp;retour=index.php'/>";
-    echo "<img src='img/modif.png' alt='Voir' border='0'/></a>";
+    echo "<img src='themes/default/images/modif.png' alt='Voir' border='0'/></a>";
     echo "<a href='javascript:plHebdoSupprime({$elem['id']});' style='margin-left:6px;'/>";
-    echo "<img src='img/suppr.png' alt='Voir' border='0'/></a></td>";
+    echo "<img src='themes/default/images/suppr.png' alt='Voir' border='0'/></a></td>";
   echo "<td>{$elem['nom']}</td>";
   echo "<td>{$elem['service']}</td>";
   echo "<td>".dateFr($elem['debut'])."</td>";
