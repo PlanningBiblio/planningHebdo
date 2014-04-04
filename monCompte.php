@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.3
+Planning Biblio, Plugin planningHebdo Version 1.3.5
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 20 mars 2014
+Dernière modification : 4 avril 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -296,7 +296,7 @@ EOD;
   echo "<tr><td>Crédit annuel</td><td style='text-align:right;'>".heure4($credits['annuel'])."</td><td style='text-align:right;'>{$credits['joursAnnuel']} jours</td></tr>\n";
   echo "<tr><td>Crédit restant</td><td style='text-align:right;'>".heure4($credits['conges'])."</td><td style='text-align:right;'>{$credits['joursConges']} jours</td></tr>\n";
   echo "<tr><td>Reliquat</td><td style='text-align:right;'>".heure4($credits['reliquat'])."</td><td style='text-align:right;'>{$credits['joursReliquat']} jours</td></tr>\n";
-  echo "<tr><td>Pris par anticipation</td><td style='text-align:right;'>".heure4($credits['anticipation'])."</td><td style='text-align:right;'>{$credits['joursAnticipation']} jours</td></tr>\n";
+  echo "<tr><td>Solde débiteur</td><td style='text-align:right;'>".heure4($credits['anticipation'])."</td><td style='text-align:right;'>{$credits['joursAnticipation']} jours</td></tr>\n";
   echo "<tr><td style='font-weight:bold;padding-top:20px;' colspan='2'>Récupérations</td></tr>\n";
   echo "<tr><td>Crédit</td><td style='text-align:right;'>".heure4($credits['recuperation'])."</td><td style='text-align:right;'>{$credits['joursRecuperation']} jours</td></tr>\n";
   echo "</table>\n";
