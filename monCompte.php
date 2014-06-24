@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.5
+Planning Biblio, Plugin planningHebdo Version 1.3.6
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 4 avril 2014
+Dernière modification : 24 juin 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -267,7 +267,7 @@ foreach($p->elements as $elem){
 
   echo "<tr>";
   echo "<td style='white-space:nowrap;'>$arrow <a href='index.php?page=plugins/planningHebdo/modif.php&amp;id={$elem['id']}&amp;retour=monCompte.php'/>";
-    echo "<img src='themes/default/images/modif.png' alt='Voir' border='0'/></a></td>";
+    echo "<span class='pl-icon pl-icon-edit' title='Voir'></span></a></td>";
   echo "<td>".dateFr($elem['debut'])."</td>";
   echo "<td>".dateFr($elem['fin'])."</td>";
   echo "<td>".dateFr($elem['saisie'],true)."</td>";

@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.3
+Planning Biblio, Plugin planningHebdo Version 1.3.6
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 27 février 2013
+Dernière modification : 24 juin 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -82,9 +82,9 @@ foreach($p->elements as $elem){
 
   echo "<tr>";
   echo "<td style='white-space:nowrap;'>$arrow <a href='index.php?page=plugins/planningHebdo/modif.php&amp;id={$elem['id']}&amp;retour=index.php'/>";
-    echo "<img src='themes/default/images/modif.png' alt='Voir' border='0'/></a>";
+    echo "<span class='pl-icon pl-icon-edit' title='Voir'></span></a>";
     echo "<a href='javascript:plHebdoSupprime({$elem['id']});' style='margin-left:6px;'/>";
-    echo "<img src='themes/default/images/suppr.png' alt='Voir' border='0'/></a></td>";
+    echo "<span class='pl-icon pl-icon-drop' title='Supprimer'></span></a></td>";
   echo "<td>{$elem['nom']}</td>";
   echo "<td>{$elem['service']}</td>";
   echo "<td>".dateFr($elem['debut'])."</td>";
