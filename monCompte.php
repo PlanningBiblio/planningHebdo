@@ -7,7 +7,7 @@ Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 24 juin 2014
+Dernière modification : 25 juin 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -74,31 +74,30 @@ if(isset($_GET['message'])){
 
 ?>
 <!--	Menu	-->
-<div id='onglets'>
-<font id='titre'>Mon Compte</font>
+<h3>Mon Compte</h3>
+
+<div class='ui-tabs'>
 <ul>
 <?php
 if(in_array("conges",$plugins)){
   echo <<<EOD
-    <li id='current'><a href='javascript:show("planningPresence","credits,motDePasse","li1");'>Mes plannings de présence</a></li>
-    <li id='li2'><a href='javascript:show("credits","planningPresence,motDePasse","li2");'>Mes crédits</a></li>
-    <li id='li3'><a href='javascript:show("motDePasse","planningPresence,credits","li3");'>Mon mot de passe</a></li>
+    <li><a href='#planningPresence'>Mes plannings de présence</a></li>
+    <li><a href='#credits'>Mes crédits</a></li>
+    <li><a href='#motDePasse'>Mon mot de passe</a></li>
 EOD;
 }
 else{
   echo <<<EOD
-    <li id='current'><a href='javascript:show("planningPresence","motDePasse","li1");'>Mes plannings de présence</a></li>
-    <li id='li2'><a href='javascript:show("motDePasse","planningPresence","li2");'>Mon mot de passe</a></li>
+    <li><a href='#planningPresence'>Mes plannings de présence</a></li>
+    <li><a href='#motDePasse'>Mon mot de passe</a></li>
 EOD;
 }
 ?>
 </ul>
-</div>
-<br/><br/><br/><br/>
 
 <!-- Planning de présence -->
-<div id='planningPresence' style='margin-left:80px;'>
-<table style='width:750px;'>
+<div id='planningPresence'>
+<table style='width:800px;'>
 <tr><td><h3>Planning de présence</h3></td>
 <td style='text-align:right;'>
   <a href='#' onclick='document.getElementById("nouveauPlanning").style.display="";this.style.display="none";document.getElementById("historique").style.display="none";'>
@@ -320,6 +319,7 @@ else{
 }
 ?>
 </div> <!-- motDePasse -->
+</div> <!-- ui-tabs -->
 
 <script type='text/JavaScript'>
 $(document).ready(function() {
