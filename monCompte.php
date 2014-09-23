@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.6
+Planning Biblio, Plugin planningHebdo Version 1.3.8
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 25 juin 2014
+Dernière modification : 22 septembre 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -197,9 +197,12 @@ for($j=0;$j<$config['nb_semaine'];$j++){
       echo "<td>".selectTemps($i-1,2,2,"select2")."</td><td>".selectTemps($i-1,3,2,"select2")."</td>";
       if($config['Multisites-nombre']>1){
 	echo "<td><select name='temps2[".($i-1)."][4]'>\n";
-	echo "<option value=''>&nbsp;</option>\n";
-	echo "<option value='1' >{$config['Multisites-site1']}</option>\n";
-	echo "<option value='2' >{$config['Multisites-site2']}</option>\n";
+	if(count($sites)>1){
+	  echo "<option value=''>&nbsp;</option>\n";
+	}
+	foreach($sites as $site){
+	  echo "<option value='$site' >{$config["Multisites-site{$site}"]}</option>\n";
+	}
 	echo "</select></td>";
       }
       echo "<td id='heures2_{$j}_$i'></td>\n";
