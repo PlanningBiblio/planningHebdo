@@ -1,12 +1,12 @@
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.3
+Planning Biblio, Plugin planningHebdo Version 1.3.9
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2014 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/js/script.planningHebdo.js
 Création : 26 août 2013
-Dernière modification : 27 février 2014
+Dernière modification : 5 novembre 2014
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -91,8 +91,17 @@ function plHebdoCalculHeures2(){
 
 function plHebdoSupprime(id){
   if(confirm("Etes vous sûr(e) de vouloir supprimer ce planning de présence ?")){
-    f=file("index.php?page=plugins/planningHebdo/supprime.php&id="+id);
-    document.location.reload(false);
+    $.ajax({
+      url: "plugins/planningHebdo/ajax.delete.php",
+      data: "id="+id,
+      type: "get",
+      success: function(){
+	document.location.reload(false);
+      },
+      error: function(){
+	information("Erreur lors de la suppression du planning de pr&eacute;sence","error");
+      }
+    });
   }
 }
 
@@ -114,23 +123,37 @@ function plHebdoVerifForm(){
     alert("La date de fin doit être supérieure à la date de début");
     return false;
   }
-  
-  f=file("plugins/planningHebdo/ajax.verifPlannings.php?debut="+debut+"&fin="+fin+id+perso_id);
-  tmp=f.split("###");
-  if(tmp[1]=="OK"){
-    return true;
+
+  var retour=false;
+  $.ajax({
+    url: "plugins/planningHebdo/ajax.verifPlannings.php",
+    data: "debut="+debut+"&fin="+fin+id+perso_id,
+    type: "get",
+    async: false,
+    success: function(result){
+      result=JSON.parse(result);
+      if(result["retour"]=="OK"){
+	retour="true";
+      }else{
+        if(perso_id){
+	  message="Un planning est enregistré pour cet agent pour la période du "+dateFr(result["debut"])+" au "+dateFr(result["fin"])
+	  +"\nVeuillez modifier les dates de début et/ou de fin ou modifier le premier planning.";
+	}else{
+	  message="Vous avez déjà enregistré un planning pour la période du "+dateFr(result["debut"])+" au "+dateFr(result["fin"])
+	  +"\nVeuillez modifier les dates de début et/ou de fin ou modifier le premier planning.";
+	}
+	alert(message);
+	retour="false";
+      }
+    },
+    error: function(result){
+      information(result.responseText,"error");
+	retour="false";
+    }
+  });
+  if(retour){
+    return retour=="true"?true:false;
   }
-  
-  if(perso_id){
-    message="Un planning est enregistré pour cet agent pour la période du "+dateFr(tmp[1])+" au "+dateFr(tmp[2])
-      +"\nVeuillez modifier les dates de début et/ou de fin ou modifier le premier planning."
-  }
-  else{
-    message="Vous avez déjà enregistré un planning pour la période du "+dateFr(tmp[1])+" au "+dateFr(tmp[2])
-      +"\nVeuillez modifier les dates de début et/ou de fin ou modifier le premier planning."
-  }
-  alert(message);
-  return false;
 }
 
 function plHebdoVerifFormPeriodesDefinies(){

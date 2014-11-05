@@ -1,6 +1,6 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.1
+Planning Biblio, Plugin planningHebdo Version 1.3.9
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2014 - Jérôme Combes
@@ -23,7 +23,7 @@ if($_SESSION['login_id']!=1){
   exit;
 }
 
-$version="1.3.1";
+$version="1.3.9";
 include_once "../../include/config.php";
 
 $sql=array();
@@ -36,7 +36,11 @@ $sql=array();
 // $sql[]="ALTER TABLE `{$dbprefix}planningHebdo` ADD `remplace` INT(11) NOT NULL DEFAULT '0';";
 
 // Mise à jour du 4 février
-$sql[]="INSERT INTO `{$dbprefix}planningHebdoConfig` (`nom`,`valeur`) VALUES ('notifications','droit');";
+// $sql[]="INSERT INTO `{$dbprefix}planningHebdoConfig` (`nom`,`valeur`) VALUES ('notifications','droit');";
+
+// Mise à jour 1.3.9
+$sql[]="DELETE FROM `{$dbprefix}acces`  WHERE `page`='plugins/planningHebdo/supprime.php';";
+
 
 ?>
 <!-- Entête HTML -->
