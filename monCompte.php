@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.8
+Planning Biblio, Plugin planningHebdo Version 1.4.1
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 22 septembre 2014
+Dernière modification : 4 février 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -226,7 +226,7 @@ if(!$configHebdo['periodesDefinies']){
   <td><input type='text' name='debut' class='datepicker'/></td>
   <td>Date de fin</td>
   <td><input type='text' name='fin' class='datepicker'/></td>
-  <td><input type='submit' value='Valider' class='ui-button' />
+  <td><input type='submit' value='Enregistrer' class='ui-button' />
   </tr>
   </table>
 EOD;
