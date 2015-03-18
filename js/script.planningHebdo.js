@@ -1,12 +1,12 @@
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.9
+Planning Biblio, Plugin planningHebdo Version 1.4.1
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/js/script.planningHebdo.js
 Création : 26 août 2013
-Dernière modification : 5 novembre 2014
+Dernière modification : 17 mars 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -168,3 +168,16 @@ function plHebdoVerifFormPeriodesDefinies(){
   }
   return result; 
 }
+
+$(document).ready(function(){
+  $("#tablePlanningHebdo").dataTable({
+    "bJQueryUI": true,
+    "sPaginationType": "full_numbers",
+    "bStateSave": true,
+    "aaSorting" : [[3,"asc"],[4,"asc"],[1,"asc"]],
+    "aoColumns" : [{"bSortable":false},{"bSortable":true},{"bSortable":true},{"sType": "date-fr"},{"sType": "date-fr"},{"sType": "date-fr"},{"bSortable":true},{"bSortable":true},{"bSortable":true},],
+    "aLengthMenu" : [[25,50,75,100,-1],[25,50,75,100,"Tous"]],
+    "iDisplayLength" : 25,
+    "oLanguage" : {"sUrl" : "vendor/dataTables.french.lang"}
+  });
+});
