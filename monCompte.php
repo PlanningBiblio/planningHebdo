@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.4.1
+Planning Biblio, Plugin planningHebdo Version 1.4.3
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 4 février 2015
+Dernière modification : 27 mars 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -248,9 +248,17 @@ $(".select2").change(function(){plHebdoCalculHeures($(this),2);});
 <div id='historique'>
 Mes plannings de présence
 <br/>
-<table id='tablePresence'>
+<table id='tablePresenceMonCompte' class='CJDataTable' data-sort='[[1],[2],[3]]'>
 <thead>
-<tr><th>&nbsp;</th><th>Début</th><th>Fin</th><th>Saisie</th><th>Validation</th><th>Actuel</th><th>Commentaires</th></tr>
+  <tr>
+    <th class='dataTableNoSort'>&nbsp;</th>
+    <th class='dataTableDateFR'>Début</th>
+    <th class='dataTableDateFR'>Fin</th>
+    <th class='dataTableDateFR'>Saisie</th>
+    <th>Validation</th>
+    <th>Actuel</th>
+    <th>Commentaires</th>
+  </tr>
 </thead>
 <tbody>
 <?php
@@ -323,18 +331,3 @@ else{
 ?>
 </div> <!-- motDePasse -->
 </div> <!-- ui-tabs -->
-
-<script type='text/JavaScript'>
-$(document).ready(function() {
-  $("#tablePresence").dataTable({
-    "bJQueryUI": true,
-    "sPaginationType": "full_numbers",
-    "bStateSave": true,
-    "aaSorting" : [[1,"asc"],[2,"asc"],[3,"asc"],],
-    "aoColumns" : [{"bSortable":false},{"sType": "date-fr"},{"sType": "date-fr"},{"sType": "date-fr"},{"bSortable":true},{"bSortable":true},{"bSortable":true},],
-    "aLengthMenu" : [[25,50,75,100,-1],[25,50,75,100,"Tous"]],
-    "iDisplayLength" : 25,
-    "oLanguage" : {"sUrl" : "vendor/dataTables.french.lang"}
-  });
-});
-</script>

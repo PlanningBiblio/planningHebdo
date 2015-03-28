@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.4.1
+Planning Biblio, Plugin planningHebdo Version 1.4.3
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 18 mars 2015
+Dernière modification : 27 mars 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -62,10 +62,20 @@ Début : <input type='text' name='debut' class='datepicker' value='$debut' />
 
 <br/>
 
-<table id='tablePlanningHebdo'>
+<table id='tablePlanningHebdo' class='CJDataTable' data-sort='[[3],[4],[1]]'>
 <thead>
-  <tr><th>&nbsp;</th><th>Agent</th><th>Service</th><th>Début</th><th>Fin</th><th>Saisie</th><th>Validation</th><th>Actuel</th><th>Commentaires</th></tr>
-  </thead>
+  <tr>
+    <th class='dataTableNoSort'>&nbsp;</th>
+    <th>Agent</th>
+    <th>Service</th>
+    <th class='dataTableDateFr'>Début</th>
+    <th class='dataTableDateFr'>Fin</th>
+    <th class='dataTableDateFr'>Saisie</th>
+    <th>Validation</th>
+    <th>Actuel</th>
+    <th>Commentaires</th>
+  </tr>
+</thead>
 <tbody>
 EOD;
 foreach($p->elements as $elem){
