@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.1
+Planning Biblio, Plugin planningHebdo Version 1.4.5
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/planning.php
 Création : 22 mars 2014
-Dernière modification : 22 mars 2014
+Dernière modification : 10 avril 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -22,16 +22,18 @@ $date = date courante
 
 include_once "class.planningHebdo.php";
 $p=new planningHebdo();
-$p->perso_id=$elem['id'];
 $p->debut=$date;
 $p->fin=$date;
 $p->valide=true;
 $p->fetch();
 
 if(empty($p->elements)){
-  $temps=array();
+  $tempsPlanningHebdo=null;
 }
-else{  
-  $temps=$p->elements[0]['temps'];
+else{
+  $tempsPlanningHebdo=array();
+  foreach($p->elements as $elem){
+    $tempsPlanningHebdo[$elem["perso_id"]]=$elem["temps"];
+  }
 }
 ?>
