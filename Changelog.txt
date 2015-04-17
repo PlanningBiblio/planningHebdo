@@ -1,3 +1,16 @@
+***	Version 1.4.6	(Jérôme Combes, 17 avril 2015)		***
+- Corrections :
+Corrige les vulnérabilités Reflected XSS
+Corrige les vulnérabilités Client Potential XSS
+
+***	Version 1.4.5	(Jérôme Combes, 10 avril 2015)		***
+- Améliorations :
+Optimise la recherche des emplois du temps sur la page du planning et dans le menu permettant de placer les agents (gain de temps)
+
+***	Version 1.4.3	(Jérôme Combes, 28 mars 2015)		***
+- Améliorations :
+Créé les dataTables avec la classe CJDataTable
+
 ***	Version 1.4.1	(Jérôme Combes, 17 mars 2015)		***
 - Améliorations :
 Initialisation du datatable de la page index.php dans fichier JS
