@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.4.3
+Planning Biblio, Plugin planningHebdo Version 1.4.6
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 27 mars 2015
+Dernière modification : 17 avril 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -57,19 +57,6 @@ if(in_array("conges",$plugins)){
   $credits['joursReliquat']=number_format($credits['reliquat']/7,2,","," ");
   $credits['joursAnticipation']=number_format($credits['anticipation']/7,2,","," ");
   $credits['joursRecuperation']=number_format($credits['recuperation']/7,2,","," ");
-}
-
-// Notifications
-if(isset($_GET['message'])){
-  switch($_GET['message']){
-    case "Ajout-OK" : $message="Le planning a été ajouté avec succés."; $type="highlight";	break;
-    case "Ajout-erreur" : $message="Une erreur est survenue lors de l'enregistrement du planning."; $type="error"; break;
-    case "Modif-OK" : $message="Le planning a été modifié avec succés."; $type="highlight";	break;
-    case "Modif-erreur" : $message="Une erreur est survenue lors de la modification du planning."; $type="error"; break;
-  }
-  if($message){
-    echo "<script type='text/JavaScript'>information('$message','$type',70);</script>\n";
-  }
 }
 
 ?>

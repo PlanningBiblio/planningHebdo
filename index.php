@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.4.3
+Planning Biblio, Plugin planningHebdo Version 1.4.6
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 27 mars 2015
+Dernière modification : 17 avril 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -18,10 +18,19 @@ Page accessible à partir du menu administration/planning de présence
 include "class.planningHebdo.php";
 
 // Initialisation des variables
-$tri=isset($_GET['tri'])?$_GET['tri']:"`debut`,`fin`,`nom`,`prenom`";
-$debut=isset($_GET['debut'])?$_GET['debut']:(array_key_exists("planningHebdoDebut",$_SESSION['oups'])?$_SESSION['oups']['planningHebdoDebut']:null);
-$fin=isset($_GET['fin'])?$_GET['fin']:(array_key_exists("planningHebdoFin",$_SESSION['oups'])?$_SESSION['oups']['planningHebdoFin']:null);
-if(isset($_GET['reset'])){
+$debut=filter_input(INPUT_GET,"debut",FILTER_CALLBACK,array("options"=>"sanitize_dateFr"));
+$fin=filter_input(INPUT_GET,"fin",FILTER_CALLBACK,array("options"=>"sanitize_dateFr"));
+$reset=filter_input(INPUT_GET,"reset",FILTER_CALLBACK,array("options"=>"sanitize_on"));
+
+if(!$debut){
+	$debut=array_key_exists("planningHebdoDebut",$_SESSION['oups'])?$_SESSION['oups']['planningHebdoDebut']:null;
+}
+
+if(!$fin){
+	$fin=array_key_exists("planningHebdoFin",$_SESSION['oups'])?$_SESSION['oups']['planningHebdoFin']:null;
+}
+
+if($reset){
   $debut=null;
   $fin=null;
 }
@@ -33,21 +42,7 @@ $message=null;
 $p=new planningHebdo();
 $p->debut=dateFr($debut);
 $p->fin=dateFr($fin);
-$p->tri=$tri;
 $p->fetch();
-
-// Notifications
-if(isset($_GET['message'])){
-  switch($_GET['message']){
-    case "Ajout-OK" :	$message="Le planning a été ajouté avec succés."; $type="highlight";	break;
-    case "Ajout-erreur" : $message="Une erreur est survenue lors de l'enregistrement du planning.";  $type="error";	break;
-    case "Modif-OK" : 	$message="Le planning a été modifié avec succés."; $type="highlight";	break;
-    case "Modif-erreur" : $message="Une erreur est survenue lors de la modification du planning."; $type="error";	break;
-  }
-  if($message){
-    echo "<script type='text/JavaScript'>information('$message','$type');</script>\n";
-  }
-}
 
 echo <<<EOD
 <h3>Plannings de présence</h3>
@@ -56,7 +51,7 @@ echo <<<EOD
 Début : <input type='text' name='debut' class='datepicker' value='$debut' />
 &nbsp;&nbsp;Fin : <input type='text' name='fin' class='datepicker' value='$fin' />
 &nbsp;&nbsp;<input type='submit' value='OK' class='ui-button' />
-&nbsp;&nbsp;<input type='button' value='Effacer' onclick='location.href="index.php?page=plugins/planningHebdo/index.php&amp;reset="' class='ui-button' />
+&nbsp;&nbsp;<input type='button' value='Effacer' onclick='location.href="index.php?page=plugins/planningHebdo/index.php&amp;reset=on"' class='ui-button' />
 <a href='index.php?page=plugins/planningHebdo/configuration.php' style='position:absolute;right:10px;'>Configuration</a>
 </form>
 

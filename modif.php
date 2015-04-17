@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.3
+Planning Biblio, Plugin planningHebdo Version 1.4.6
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/modif.php
 Création : 23 juillet 2013
-Dernière modification : 22 mars 2014
+Dernière modification : 17 avril 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -23,7 +23,8 @@ $p->getConfig();
 $configHebdo=$p->config;
 
 // Initialisation des variables
-$id=$_GET['id'];
+$id=filter_input(INPUT_GET,"id",FILTER_SANITIZE_NUMBER_INT);
+$retour=filter_input(INPUT_GET,"retour",FILTER_SANITIZE_STRING);
 
 $p=new planningHebdo();
 $p->id=$id;
@@ -77,7 +78,7 @@ if(!$configHebdo['periodesDefinies']){
 <input type='hidden' name='page' value='plugins/planningHebdo/valid.php' />
 <input type='hidden' name='action' value='<?php echo $action; ?>' />
 <input type='hidden' name='validation' value='0' />
-<input type='hidden' name='retour' value='<?php echo $_GET['retour']; ?>' />
+<input type='hidden' name='retour' value='<?php echo $retour; ?>' />
 <input type='hidden' name='id' value='<?php echo $id; ?>' />
 <input type='hidden' name='perso_id' value='<?php echo $perso_id; ?>' />
 <input type='hidden' name='valide' value='<?php echo $valide; ?>' />
@@ -177,7 +178,7 @@ else{
   echo "<td><input type='hidden' name='fin' value='$fin1'/></td></tr>\n";
 }
 echo "<tr><td colspan='4' style='padding-top:20px;'>\n";
-echo "<input type='button' value='Retour' onclick='location.href=\"index.php?page=plugins/planningHebdo/{$_GET['retour']}\";' class='ui-button' />\n";
+echo "<input type='button' value='Retour' onclick='location.href=\"index.php?page=plugins/planningHebdo/$retour\";' class='ui-button' />\n";
 
 if($admin){
   echo "<input type='submit' value='Enregistrer les modifications SANS valider' style='margin-left:30px;' class='ui-button' />\n";

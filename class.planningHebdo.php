@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.1
+Planning Biblio, Plugin planningHebdo Version 1.4.6
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/class.planningHebdo.php
 Création : 23 juillet 2013
-Dernière modification : 4 février 2014
+Dernière modification : 17 avril 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -49,6 +49,8 @@ class planningHebdo{
       $data['fin']=preg_replace("/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/","$3-$2-$1",$data['fin']);
     }
 
+    $perso_id=array_key_exists("perso_id",$data)?$data["perso_id"]:$_SESSION['login_id'];
+
     // Si $data['annee'] : il y a 2 périodes distinctes avec des horaires définis 
     // (horaires normaux et horaires réduits) soit 2 tableaux à insérer
     if(array_key_exists("annee",$data)){
@@ -58,20 +60,20 @@ class planningHebdo{
       $dates=$this->periodes;
 
       // 1er tableau
-      $insert=array("perso_id"=>$_SESSION['login_id'],"debut"=>$dates[0][0],"fin"=>$dates[0][1],"temps"=>serialize($data['temps']));
+      $insert=array("perso_id"=>$perso_id,"debut"=>$dates[0][0],"fin"=>$dates[0][1],"temps"=>serialize($data['temps']));
 
       $db=new db();
       $db->insert2("planningHebdo",$insert);
       $this->error=$db->error;
       // 2ème tableau
-      $insert=array("perso_id"=>$_SESSION['login_id'],"debut"=>$dates[0][2],"fin"=>$dates[0][3],"temps"=>serialize($data['temps2']));
+      $insert=array("perso_id"=>$perso_id,"debut"=>$dates[0][2],"fin"=>$dates[0][3],"temps"=>serialize($data['temps2']));
       $db=new db();
       $db->insert2("planningHebdo",$insert);
       $this->error=$db->error?$db->error:$this->error;
     }
     // Sinon, insertion d'un seul tableau
     else{
-      $insert=array("perso_id"=>$_SESSION['login_id'],"debut"=>$data['debut'],"fin"=>$data['fin'],"temps"=>serialize($data['temps']));
+      $insert=array("perso_id"=>$perso_id,"debut"=>$data['debut'],"fin"=>$data['fin'],"temps"=>serialize($data['temps']));
 
       // Dans le cas d'une copie (voir fonction copy)
       if(isset($data['remplace'])){
@@ -101,8 +103,8 @@ class planningHebdo{
 
     if(!empty($destinataires)){
       $destinataires=join(";",$destinataires);
-      $sujet="Nouveau planning de présence, ".html_entity_decode(nom($_SESSION['login_id'],"prenom nom"),ENT_QUOTES|ENT_IGNORE,"UTF-8");
-      $message=nom($_SESSION['login_id'],"prenom nom");
+      $sujet="Nouveau planning de présence, ".html_entity_decode(nom($perso_id,"prenom nom"),ENT_QUOTES|ENT_IGNORE,"UTF-8");
+      $message=nom($perso_id,"prenom nom");
       $message.=" a enregistré un nouveau planning de présence dans l'application Planning Biblio<br/>";
       $message.="Rendez-vous dans le menu administration / Plannings de présence de votre application Planning Biblio pour le valider.";
       sendmail($sujet,$message,$destinataires);
@@ -298,10 +300,12 @@ class planningHebdo{
     $data['debut']=preg_replace("/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/","$3-$2-$1",$data['debut']);
     $data['fin']=preg_replace("/([0-9]{2})\/([0-9]{2})\/([0-9]{4})/","$3-$2-$1",$data['fin']);
 
+    $perso_id=array_key_exists("perso_id",$data)?$data["perso_id"]:$_SESSION['login_id'];
+
     $temps=serialize($data['temps']);
-    $update=array("debut"=>$data['debut'],"fin"=>$data['fin'],"temps"=>$temps,"modif"=>$_SESSION['login_id'],"modification"=>date("Y-m-d H:i:s"));
+    $update=array("debut"=>$data['debut'],"fin"=>$data['fin'],"temps"=>$temps,"modif"=>$perso_id,"modification"=>date("Y-m-d H:i:s"));
     if($data['validation']){
-      $update['valide']=$_SESSION['login_id'];
+      $update['valide']=$perso_id;
       $update['validation']=date("Y-m-d H:i:s");
     }
     $db=new db();
