@@ -1,12 +1,12 @@
 /*
-Planning Biblio, Plugin planningHebdo Version 1.4.3
+Planning Biblio, Plugin planningHebdo Version 1.4.6
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/js/script.planningHebdo.js
 Création : 26 août 2013
-Dernière modification : 27 mars 2015
+Dernière modification : 17 avril 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -76,7 +76,7 @@ function plHebdoCalculHeures(object,num){
     }
   }
   heures=heure4(heures/60);
-  document.getElementById("heures"+num+"_"+numero).innerHTML=heures;
+  $("#heures"+num+"_"+numero).text(heures);
 }
 
 // Fonction permettant d'afficher les heures correspondantes à chaque tableau
