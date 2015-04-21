@@ -7,7 +7,7 @@ Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/class.planningHebdo.php
 Création : 23 juillet 2013
-Dernière modification : 17 avril 2015
+Dernière modification : 21 avril 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -15,9 +15,9 @@ Fichier regroupant le fonctions planningHebdo.
 Appelé par les autres fichiers du dossier plugins/planningHebdo
 */
 
-// pas de $version=acces direct aux pages de ce dossier => redirection vers la page index.php
-if(!$version){
-  header("Location: ../../index.php");
+// pas de $version=acces direct aux pages de ce dossier => Accès refusé
+if(!isset($version)){
+  include_once "../../include/accessDenied.php";
 }
 
 $path=substr($_SERVER['SCRIPT_NAME'],-9)=="index.php"?null:"../../";
