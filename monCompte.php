@@ -7,14 +7,14 @@ Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/monCompte.php
 Création : 23 juillet 2013
-Dernière modification : 17 avril 2015
+Dernière modification : 22 avril 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
 Fichier permettant de modifier son mot de passe et son planning de présence hebdomadaire
 */
 
-include "class.planningHebdo.php";
+require_once "class.planningHebdo.php";
 
 // Recherche de la config
 $p=new planningHebdo();

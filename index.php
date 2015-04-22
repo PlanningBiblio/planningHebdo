@@ -7,7 +7,7 @@ Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 23 juillet 2013
-Dernière modification : 17 avril 2015
+Dernière modification : 22 avril 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -15,7 +15,7 @@ Affiche la liste des plannings de présence pour l'administrateur
 Page accessible à partir du menu administration/planning de présence
 */
 
-include "class.planningHebdo.php";
+require_once "class.planningHebdo.php";
 
 // Initialisation des variables
 $debut=filter_input(INPUT_GET,"debut",FILTER_CALLBACK,array("options"=>"sanitize_dateFr"));

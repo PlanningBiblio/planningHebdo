@@ -1,13 +1,13 @@
 <?php
 /*
-Planning Biblio, Plugin planningHebdo Version 1.3.1
+Planning Biblio, Plugin planningHebdo Version 1.4.6
 Licence GNU/GPL (version 2 et au dela)
 Voir les fichiers README.md et LICENSE
 Copyright (C) 2013-2015 - Jérôme Combes
 
 Fichier : plugins/planningHebdo/index.php
 Création : 25 juillet 2013
-Dernière modification : 4 février 2014
+Dernière modification : 22 avril 2015
 Auteur : Jérôme Combes, jerome@planningbilbio.fr
 
 Description :
@@ -15,17 +15,19 @@ Affiche la liste des plannings de présence pour l'administrateur
 Page accessible à partir du menu administration/planning de présence
 */
 
-include "class.planningHebdo.php";
+require_once "class.planningHebdo.php";
+
+$post=filter_input_array(INPUT_POST,FILTER_SANITIZE_STRING);
 
 // Mise à jour de la configHebdo
-if($_POST){
+if($post){
   $error=false;
   $p=new planningHebdo();
-  $p->updateConfig($_POST);
+  $p->updateConfig($post);
   $error=$p->error?true:$error;
 
   $p=new planningHebdo();
-  $p->updatePeriodes($_POST);
+  $p->updatePeriodes($post);
   $error=$p->error?true:$error;
   $message=null;
 
